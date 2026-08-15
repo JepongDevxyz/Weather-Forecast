@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="tl">
+<!-- Jay-Ar Lee Espiritu -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <!-- Leaflet JS CSS at JavaScript (Free & No Token Required) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .weather-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 540px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .header h2 {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
+            margin-bottom: 6px;
+        }
+
+        .clock {
+            font-size: 13px;
+            color: #e0e0e0;
+            background: rgba(255, 255, 255, 0.1);
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .location-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4facfe;
+            margin: 15px 0 5px;
+            line-height: 1.4;
+            min-height: 25px;
+        }
+
+        .status-msg {
+            font-size: 14px;
+            color: #ffda79;
+            margin: 15px 0;
+        }
+
+        .main-weather {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+        }
+
+        .temp {
+            font-size: 56px;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .condition-badge {
+            display: inline-block;
+            background: rgba(79, 172, 254, 0.2);
+            color: #00f2fe;
+            padding: 6px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+        }
+
+        /* Weather Indicators Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .info-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px 10px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .info-box.highlight {
+            background: rgba(0, 198, 255, 0.15);
+            border: 1px solid rgba(0, 198, 255, 0.3);
+        }
+
+        .info-box .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #aaa;
+            margin-bottom: 4px;
+        }
+
+        .info-box .value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Tomorrow Forecast Box */
+        .tomorrow-box {
+            margin-top: 18px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
+        }
+
+        .tomorrow-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #00f2fe;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .tomorrow-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tomorrow-temp {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .tomorrow-desc {
+            font-size: 13px;
+            color: #ddd;
+        }
+
+        /* Leaflet Map Styling */
+        .map-container {
+            margin-top: 18px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: 180px;
+            width: 100%;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .last-updated {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 15px;
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            margin-top: 18px;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 114, 255, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 420px) {
+            .weather-card { padding: 24px 18px; }
+            .temp { font-size: 46px; }
+            .info-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="weather-card">
+    <div class="header">
+        <h2>Ulat ng Panahon</h2>
+        <div class="clock" id="live-clock">--:--:-- --</div>
+    </div>
+
+    <div class="location-name" id="location-name">---</div>
+    <div class="status-msg" id="status">Kina-kalkula ang iyong GPS...</div>
+
+    <div id="weather-data" style="display:none;">
+        <!-- Weather Ngayon -->
+        <div class="main-weather">
+            <div class="temp" id="temperature">--°C</div>
+            <div class="condition-badge" id="weather-code">--</div>
+        </div>
+
+        <!-- Rain, Wind, & Humidity Info Grid -->
+        <div class="info-grid">
+            <div class="info-box highlight">
+                <div class="label">Uuulan Ba Ngayon?</div>
+                <div class="value" id="rain-status">--</div>
+            </div>
+            <div class="info-box">
+                <div class="label">Tsansa ng Ulan</div>
+                <div class="value" id="rain-prob">--%</div>
+            </div>
+            <div class="info-box">
+                <div class="label">Bilis at Direksyon ng Hangin</div>
+                <div class="value" id="windspeed">-- km/h</div>
+            </div>
+            <div class="info-box">
+                <div class="label">Humidity</div>
+                <div class="value" id="humidity">--%</div>
+            </div>
+            <div class="info-box" style="grid-column: span 2;">
+                <div class="label">GPS Coords</div>
+                <div class="value" id="coords">-</div>
+            </div>
+        </div>
+
+        <!-- Forecast para bukas -->
+        <div class="tomorrow-box">
+            <div class="tomorrow-title">📅 Forecast para bukas</div>
+            <div class="tomorrow-details">
+                <div>
+                    <div class="tomorrow-desc" id="tmr-condition">--</div>
+                    <div class="tomorrow-desc" style="font-size:11px; opacity:0.8;" id="tmr-rain">Tsansa ng ulan: --%</div>
+                </div>
+                <div class="tomorrow-temp" id="tmr-temp">--° / --°</div>
+            </div>
+        </div>
+
+        <!-- Interactive Map (Leaflet.js) -->
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+
+        <div class="last-updated">Huling na-update: <span id="update-time">--</span><br><br>Jepong Devxyz</div>
+    </div>
+
+    <button onclick="getWeather()">I-refresh ang Data</button>
+</div>
+
+<script>
+let map = null;
+let marker = null;
+
+function updateClock() {
+    const now = new Date();
+    const options = { 
+        weekday: 'short', 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric',
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: true 
+    };
+    document.getElementById('live-clock').textContent = now.toLocaleString('tl-PH', options);
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+function getWeather() {
+    const status = document.getElementById('status');
+    const weatherData = document.getElementById('weather-data');
+    const locationName = document.getElementById('location-name');
+
+    status.style.display = 'block';
+    status.textContent = 'Kinu-kuha ang eksaktong GPS...';
+    locationName.textContent = '---';
+
+    const geoOptions = {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+    };
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                fetchLocationName(lat, lon);
+                fetchWeather(lat, lon);
+                initMap(lat, lon);
+            },
+            () => {
+                getByIP();
+            },
+            geoOptions
+        );
+    } else {
+        getByIP();
+    }
+}
+
+function fetchLocationName(lat, lon) {
+    const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`;
+    
+    fetch(geoUrl)
+        .then(res => res.json())
+        .then(data => {
+            const a = data.address;
+            const local = a.neighbourhood || a.quarter || a.suburb || a.village || a.hamlet || a.road || '';
+            const cityOrTown = a.town || a.city || a.municipality || a.county || '';
+            const province = a.state || '';
+
+            let locationParts = [];
+            if (local) locationParts.push(local);
+            if (cityOrTown && cityOrTown !== local) locationParts.push(cityOrTown);
+            if (province && province !== cityOrTown) locationParts.push(province);
+
+            document.getElementById('location-name').textContent = locationParts.length > 0 ? locationParts.join(', ') : 'Eksaktong Lokasyon';
+        })
+        .catch(() => {
+            document.getElementById('location-name').textContent = 'Eksaktong Lokasyon';
+        });
+}
+
+function getByIP() {
+    const status = document.getElementById('status');
+    fetch('https://ipapi.co/json/')
+        .then(res => res.json())
+        .then(location => {
+            if (location.latitude && location.longitude) {
+                const city = location.city || location.region || 'Tantyang Lokasyon';
+                const country = location.country_name || '';
+                document.getElementById('location-name').textContent = `${city}, ${country} (Estimado)`;
+                fetchWeather(location.latitude, location.longitude);
+                initMap(location.latitude, location.longitude);
+            } else {
+                status.textContent = 'Hindi makuha ang lokasyon.';
+            }
+        })
+        .catch(() => {
+            status.textContent = 'Hindi yata naka enable ang location mo enable mo muna at refresh mo';
+        });
+}
+
+function fetchWeather(lat, lon) {
+    const status = document.getElementById('status');
+    const weatherData = document.getElementById('weather-data');
+
+    document.getElementById('coords').textContent = `${lat.toFixed(3)}°, ${lon.toFixed(3)}°`;
+
+    const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relativehumidity_2m,weathercode,windspeed_10m,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
+
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const current = data.current;
+            const daily = data.daily;
+
+            // 1. Data Ngayon
+            document.getElementById('temperature').textContent = `${Math.round(current.temperature_2m)}°C`;
+            
+            // Wind speed + Direction
+            const windDir = getWindDirection(current.winddirection_10m);
+            document.getElementById('windspeed').textContent = `${Math.round(current.windspeed_10m)} km/h ${windDir}`;
+            
+            // Humidity
+            document.getElementById('humidity').textContent = `${current.relativehumidity_2m}%`;
+            
+            document.getElementById('weather-code').textContent = parseWeatherCode(current.weathercode);
+
+            // Posibilidad ng Ulan Ngayon
+            const todayRainProb = daily.precipitation_probability_max[0] || 0;
+            document.getElementById('rain-prob').textContent = `${todayRainProb}%`;
+            
+            if (todayRainProb >= 60) {
+                document.getElementById('rain-status').textContent = '🌧️ Malaking Tsansa';
+            } else if (todayRainProb >= 30) {
+                document.getElementById('rain-status').textContent = '🌦️ Posibleng Umulan';
+            } else {
+                document.getElementById('rain-status').textContent = '☀️ Hindi Uuulan';
+            }
+
+            // 2. Forecast Para sa Bukas
+            const tmrCode = daily.weathercode[1];
+            const tmrMax = Math.round(daily.temperature_2m_max[1]);
+            const tmrMin = Math.round(daily.temperature_2m_min[1]);
+            const tmrRainProb = daily.precipitation_probability_max[1] || 0;
+
+            document.getElementById('tmr-condition').textContent = parseWeatherCode(tmrCode);
+            document.getElementById('tmr-temp').textContent = `${tmrMax}° / ${tmrMin}°C`;
+            document.getElementById('tmr-rain').textContent = `Tsansa ng ulan: ${tmrRainProb}%`;
+
+            const now = new Date();
+            document.getElementById('update-time').textContent = now.toLocaleTimeString('tl-PH', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+            status.style.display = 'none';
+            weatherData.style.display = 'block';
+        })
+        .catch(() => {
+            status.textContent = 'Nagka-error sa pagkuha ng weather data.';
+        });
+}
+
+function getWindDirection(degree) {
+    const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+    return directions[Math.round(degree / 45) % 8];
+}
+
+// Leaflet Map Initialization (Ganap na libre, walang token)
+function initMap(lat, lon) {
+    if (!map) {
+        map = L.map('map').setView([lat, lon], 13);
+
+        // CartoDB Dark Matter Tile Layer (Modern dark theme, OpenSource, Libre)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap &copy; CARTO',
+            maxZoom: 19
+        }).addTo(map);
+
+        marker = L.marker([lat, lon]).addTo(map);
+    } else {
+        map.setView([lat, lon], 13);
+        marker.setLatLng([lat, lon]);
+    }
+
+    // Siguraduhing maayos ang pag-render ng map container
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 200);
+}
+
+function parseWeatherCode(code) {
+    if (code === 0) return 'Sikat ang Araw';
+    if (code >= 1 && code <= 3) return 'Bahagyang Maulap';
+    if (code >= 45 && code <= 48) return 'May Fog';
+    if (code >= 51 && code <= 67) return 'May Pag-ulan';
+    if (code >= 80 && code <= 82) return 'Umuulan';
+    if (code >= 95) return 'May Bagyo / Kidlat';
+    return 'Maulap';
+}
+
+getWeather();
+</script>
+
+</body>
+</html>
