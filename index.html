@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="tl">
+<html lang="en">
 <!-- Jay-Ar Lee Espiritu -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Forecast</title>
+    <title>Weather Dashboard</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
@@ -17,6 +17,19 @@
             padding: 16px;
             display: flex;
             justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 1s ease;
+        }
+
+        #weather-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .dashboard-container {
@@ -26,9 +39,45 @@
             flex-direction: column;
             gap: 14px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
-        .header { text-align: center; }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Language Switcher Styling */
+        .lang-switch {
+            display: flex;
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 2px;
+            backdrop-filter: blur(8px);
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .header { text-align: center; flex: 1; }
         .header h2 { font-size: 20px; font-weight: 600; color: #f8fafc; letter-spacing: -0.5px; }
         .clock {
             font-size: 12px;
@@ -43,14 +92,14 @@
             padding: 10px 14px;
             border-radius: 8px;
             border: 1px solid #334155;
-            background: #1e293b;
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(8px);
             color: #fff;
             font-size: 13px;
             outline: none;
             min-width: 0;
         }
 
-        /* Base Styling para sa Buttons */
         .btn-ripple {
             position: relative;
             overflow: hidden;
@@ -63,7 +112,6 @@
             transform: scale(0.98);
         }
 
-        /* Water Ripple Effect Animation */
         .water-ripple {
             position: absolute;
             border-radius: 50%;
@@ -75,17 +123,9 @@
         }
 
         @keyframes water-wave {
-            0% {
-                transform: scale(0);
-                opacity: 1;
-            }
-            80% {
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(3.5);
-                opacity: 0;
-            }
+            0% { transform: scale(0); opacity: 1; }
+            80% { opacity: 0.5; }
+            100% { transform: scale(3.5); opacity: 0; }
         }
 
         .btn-search {
@@ -99,13 +139,31 @@
             white-space: nowrap;
         }
 
+        /* PAGASA News Button Style */
+        .btn-pagasa-news {
+            width: 100%;
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff;
+            border: 1px solid #38bdf8;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+        }
+
         .location-name { font-size: 18px; font-weight: 600; color: #38bdf8; text-align: center; }
         .status-msg { font-size: 13px; color: #fbbf24; text-align: center; }
 
         .main-weather {
             text-align: center;
             padding: 16px;
-            background: #1e293b;
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(8px);
             border-radius: 12px;
             border: 1px solid #334155;
         }
@@ -127,7 +185,8 @@
         }
 
         .info-box {
-            background: #1e293b;
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(8px);
             padding: 10px;
             border-radius: 10px;
             text-align: center;
@@ -151,10 +210,10 @@
         .info-box .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 2px; }
         .info-box .value { font-size: 12px; font-weight: 600; color: #f8fafc; word-break: break-word; }
 
-        /* Minimalist Tomorrow Forecast Section */
         .tomorrow-box {
             padding: 14px;
-            background: #1e293b;
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(8px);
             border-radius: 12px;
             border: 1px solid #334155;
         }
@@ -187,7 +246,7 @@
         }
 
         .tmr-item {
-            background: #0f172a;
+            background: rgba(15, 23, 42, 0.8);
             padding: 8px;
             border-radius: 8px;
             display: flex;
@@ -211,7 +270,8 @@
 
         .btn-my-location {
             width: 100%;
-            background: #1e293b;
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(8px);
             color: #f8fafc;
             border: 1px solid #334155;
             padding: 12px;
@@ -221,23 +281,150 @@
         }
 
         .last-updated { font-size: 11px; color: #64748b; text-align: center; margin-top: 6px; }
+
+        /* MODAL STYLES FOR PAGASA NEWS POP-UP */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 550px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        .modal-header h3 {
+            font-size: 15px;
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 20px;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .close-btn:hover { color: #fff; }
+
+        .modal-body {
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .official-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .link-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #334155;
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #f8fafc;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: border-color 0.2s;
+        }
+        .link-card:hover { border-color: #38bdf8; }
+
+        .iframe-container {
+            width: 100%;
+            height: 320px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #334155;
+            background: #0f172a;
+        }
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
 
+<canvas id="weather-canvas"></canvas>
+
 <div class="dashboard-container">
-    <div class="header">
-        <h2>Ulat ng Panahon</h2>
-        <div class="clock" id="live-clock">--:--:-- --</div>
+    <div class="top-bar">
+        <div style="width: 70px;"></div>
+        <div class="header">
+            <h2 id="txt-title">Weather Forecast</h2>
+        </div>
+        <div class="lang-switch">
+            <button class="lang-btn active" id="btn-lang-en" onclick="setLanguage('en')">EN</button>
+            <button class="lang-btn" id="btn-lang-tl" onclick="setLanguage('tl')">TL</button>
+        </div>
     </div>
+    <div class="clock" id="live-clock" style="text-align:center;">--:--:-- --</div>
 
     <div class="search-box">
-        <input type="text" id="city-input" class="search-input" placeholder="Mag-search ng lugar..." onkeydown="if(event.key==='Enter') searchLocation()">
-        <button class="btn-search btn-ripple" onclick="searchLocation()">Search</button>
+        <input type="text" id="city-input" class="search-input" placeholder="Search location..." onkeydown="if(event.key==='Enter') searchLocation()">
+        <button class="btn-search btn-ripple" id="txt-btn-search" onclick="searchLocation()">Search</button>
     </div>
 
+    <!-- PAGASA Latest Updates Pop-up Button -->
+    <button class="btn-pagasa-news btn-ripple" id="btn-pagasa-pop" onclick="openPagasaModal()">
+        <span>📢</span> <span id="lbl-pagasa-btn">PAGASA Weather Bulletins & Updates</span>
+    </button>
+
     <div class="location-name" id="location-name">---</div>
-    <div class="status-msg" id="status">Kina-kalkula ang GPS...</div>
+    <div class="status-msg" id="status">Fetching GPS location...</div>
 
     <div id="weather-data" style="display:none;" class="dashboard-container">
         <div class="main-weather">
@@ -247,34 +434,33 @@
 
         <div class="info-grid">
             <div class="info-box" id="rain-box">
-                <div class="label">PAGASA Rainfall Warning</div>
+                <div class="label" id="lbl-rain-warning">PAGASA Rainfall Warning</div>
                 <div class="value" id="rain-status">--</div>
             </div>
             <div class="info-box" id="typhoon-box">
-                <div class="label">PAGASA Wind Signal</div>
-                <div class="value" id="typhoon-status">Nagbi-verify...</div>
+                <div class="label" id="lbl-wind-signal">PAGASA Wind Signal</div>
+                <div class="value" id="typhoon-status">--</div>
             </div>
             <div class="info-box">
-                <div class="label">Tsansa ng Ulan Ngayon</div>
+                <div class="label" id="lbl-rain-chance">Rain Chance Today</div>
                 <div class="value" id="rain-prob">--%</div>
             </div>
             <div class="info-box">
-                <div class="label">Bilis ng Hangin</div>
+                <div class="label" id="lbl-wind-speed">Wind Speed</div>
                 <div class="value" id="windspeed">-- km/h</div>
             </div>
             <div class="info-box">
-                <div class="label">Humidity</div>
+                <div class="label" id="lbl-humidity">Humidity</div>
                 <div class="value" id="humidity">--%</div>
             </div>
             <div class="info-box">
-                <div class="label">GPS Coords</div>
+                <div class="label" id="lbl-gps">GPS Coords</div>
                 <div class="value" id="coords">-</div>
             </div>
         </div>
 
-        <!-- Minimalist Tomorrow Forecast -->
         <div class="tomorrow-box">
-            <div class="tomorrow-title">Forecast Para Bukas</div>
+            <div class="tomorrow-title" id="lbl-tmr-title">Tomorrow's Forecast</div>
             
             <div class="tomorrow-header">
                 <div>
@@ -286,19 +472,19 @@
 
             <div class="tmr-grid">
                 <div class="tmr-item">
-                    <span>☔ Tsansa</span>
+                    <span id="lbl-tmr-prob">☔ Chance</span>
                     <b id="tmr-rain-prob">--%</b>
                 </div>
                 <div class="tmr-item">
-                    <span>🌧️ Inaasahan</span>
+                    <span id="lbl-tmr-exp">🌧️ Expected</span>
                     <b id="tmr-rain-sum">-- mm</b>
                 </div>
                 <div class="tmr-item">
-                    <span>💨 Hangin</span>
+                    <span id="lbl-tmr-wind">💨 Wind</span>
                     <b id="tmr-wind">-- km/h</b>
                 </div>
                 <div class="tmr-item">
-                    <span>🌀 Status</span>
+                    <span id="lbl-tmr-status">🌀 Status</span>
                     <b id="tmr-status">--</b>
                 </div>
             </div>
@@ -308,47 +494,234 @@
             <div id="map"></div>
         </div>
 
-        <button class="btn-my-location btn-ripple" onclick="getWeather()">📍 I-check ang lokasyon ko</button>
-        <div class="last-updated">Huling na-update: <span id="update-time">--</span><br><br>Jepong Devxyz</div>
+        <button class="btn-my-location btn-ripple" id="btn-my-loc" onclick="getWeather()">📍 Check My Location</button>
+        <div class="last-updated"><span id="lbl-last-updated">Last updated:</span> <span id="update-time">--</span><br><br>Jepong Devxyz</div>
+    </div>
+</div>
+
+<!-- PAGASA News Modal / Pop-up -->
+<div class="modal-overlay" id="pagasa-modal" onclick="closePagasaModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3>🌐 PAGASA Live Updates</h3>
+            <button class="close-btn" onclick="closePagasaModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: 12px; color: #94a3b8;" id="modal-desc">
+                Direktang mga balita, thunderstorm advisories, at tropical cyclone updates mula sa PAGASA DOST.
+            </p>
+            <div class="official-links">
+                <a href="https://bagong.pagasa.dost.gov.ph/weather" target="_blank" class="link-card">
+                    🌐 <span>PAGASA Official</span>
+                </a>
+                <a href="https://www.facebook.com/PAGASA.DOST.GOV.PH" target="_blank" class="link-card">
+                    📘 <span>Facebook Page</span>
+                </a>
+            </div>
+            <div class="iframe-container">
+                <iframe src="https://bagong.pagasa.dost.gov.ph/weather#daily-weather-forecast" title="PAGASA Live Weather"></iframe>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
+let currentLang = 'en';
+let currentWeatherData = null;
+
+const i18n = {
+    en: {
+        title: "Weather Forecast",
+        searchPlaceholder: "Search location...",
+        btnSearch: "Search",
+        pagasaBtn: "PAGASA Weather Bulletins & Updates",
+        modalDesc: "Direct weather bulletins, warnings, and tropical cyclone updates from PAGASA DOST.",
+        statusFetchingGPS: "Fetching GPS location...",
+        statusSearching: 'Searching for "{query}"...',
+        statusNotFound: "Location not found.",
+        lblRainWarning: "PAGASA Rainfall Warning",
+        lblWindSignal: "PAGASA Wind Signal",
+        lblRainChance: "Rain Chance Today",
+        lblWindSpeed: "Wind Speed",
+        lblHumidity: "Humidity",
+        lblGPS: "GPS Coords",
+        lblTmrTitle: "Tomorrow's Forecast",
+        lblTmrProb: "☔ Chance",
+        lblTmrExp: "🌧️ Expected",
+        lblTmrWind: "💨 Wind",
+        lblTmrStatus: "🌀 Status",
+        btnMyLoc: "📍 Check My Location",
+        lblLastUpdated: "Last updated:"
+    },
+    tl: {
+        title: "Ulat ng Panahon",
+        searchPlaceholder: "Mag-search ng lugar...",
+        btnSearch: "Search",
+        pagasaBtn: "Mga Ulat at Balita mula sa PAGASA",
+        modalDesc: "Direktang ulat ng panahon, thunderstorm advisories, at bagyo updates mula sa PAGASA DOST.",
+        statusFetchingGPS: "Kinu-kuha ang GPS...",
+        statusSearching: 'Hina-hanap ang "{query}"...',
+        statusNotFound: "Hindi nahanap ang lugar.",
+        lblRainWarning: "PAGASA Rainfall Warning",
+        lblWindSignal: "PAGASA Wind Signal",
+        lblRainChance: "Tsansa ng Ulan Ngayon",
+        lblWindSpeed: "Bilis ng Hangin",
+        lblHumidity: "Humidity",
+        lblGPS: "GPS Coords",
+        lblTmrTitle: "Forecast Para Bukas",
+        lblTmrProb: "☔ Tsansa",
+        lblTmrExp: "🌧️ Inaasahan",
+        lblTmrWind: "💨 Hangin",
+        lblTmrStatus: "🌀 Status",
+        btnMyLoc: "📍 I-check ang lokasyon ko",
+        lblLastUpdated: "Huling na-update:"
+    }
+};
+
+function setLanguage(lang) {
+    currentLang = lang;
+    document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-lang-tl').classList.toggle('active', lang === 'tl');
+
+    const t = i18n[lang];
+    document.getElementById('txt-title').textContent = t.title;
+    document.getElementById('city-input').placeholder = t.searchPlaceholder;
+    document.getElementById('txt-btn-search').textContent = t.btnSearch;
+    document.getElementById('lbl-pagasa-btn').textContent = t.pagasaBtn;
+    document.getElementById('modal-desc').textContent = t.modalDesc;
+    document.getElementById('lbl-rain-warning').textContent = t.lblRainWarning;
+    document.getElementById('lbl-wind-signal').textContent = t.lblWindSignal;
+    document.getElementById('lbl-rain-chance').textContent = t.lblRainChance;
+    document.getElementById('lbl-wind-speed').textContent = t.lblWindSpeed;
+    document.getElementById('lbl-humidity').textContent = t.lblHumidity;
+    document.getElementById('lbl-gps').textContent = t.lblGPS;
+    document.getElementById('lbl-tmr-title').textContent = t.lblTmrTitle;
+    document.getElementById('lbl-tmr-prob').textContent = t.lblTmrProb;
+    document.getElementById('lbl-tmr-exp').textContent = t.lblTmrExp;
+    document.getElementById('lbl-tmr-wind').textContent = t.lblTmrWind;
+    document.getElementById('lbl-tmr-status').textContent = t.lblTmrStatus;
+    document.getElementById('btn-my-loc').textContent = t.btnMyLoc;
+    document.getElementById('lbl-last-updated').textContent = t.lblLastUpdated;
+
+    updateClock();
+    if (currentWeatherData) renderWeatherUI(currentWeatherData);
+}
+
+// Modal Functions
+function openPagasaModal() {
+    document.getElementById('pagasa-modal').classList.add('active');
+}
+
+function closePagasaModal(e) {
+    document.getElementById('pagasa-modal').classList.remove('active');
+}
+
+// Canvas Animation Engine
+const canvas = document.getElementById('weather-canvas');
+const ctx = canvas.getContext('2d');
+let width, height;
+
+function resizeCanvas() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+let currentEffect = 'sunny';
+let rainDrops = [], sunRays = [], flashOpacity = 0;
+
+function initEffects() {
+    rainDrops = [];
+    for (let i = 0; i < 150; i++) {
+        rainDrops.push({
+            x: Math.random() * width, y: Math.random() * height,
+            length: Math.random() * 22 + 10, speed: Math.random() * 10 + 8, opacity: Math.random() * 0.4 + 0.1
+        });
+    }
+    sunRays = [];
+    for (let i = 0; i < 25; i++) {
+        sunRays.push({
+            x: Math.random() * width, y: Math.random() * height,
+            radius: Math.random() * 80 + 30, speed: Math.random() * 0.5 + 0.2, opacity: Math.random() * 0.15 + 0.05
+        });
+    }
+}
+initEffects();
+
+function setWeatherEffect(code, rainAmount, isThunderstorm) {
+    if (code >= 95 || isThunderstorm) {
+        currentEffect = 'thunderstorm';
+        document.body.style.background = '#090d16';
+    } else if (rainAmount > 0 || (code >= 51 && code <= 82)) {
+        currentEffect = 'rain';
+        document.body.style.background = '#0f172a';
+    } else {
+        currentEffect = 'sunny';
+        document.body.style.background = 'linear-gradient(135deg, #0284c7 0%, #0f172a 100%)';
+    }
+}
+
+function animateWeather() {
+    ctx.clearRect(0, 0, width, height);
+    if (currentEffect === 'rain' || currentEffect === 'thunderstorm') {
+        for (let drop of rainDrops) {
+            ctx.beginPath();
+            ctx.moveTo(drop.x, drop.y);
+            ctx.lineTo(drop.x - drop.length * 0.2, drop.y + drop.length);
+            ctx.strokeStyle = `rgba(180, 210, 255, ${drop.opacity})`;
+            ctx.lineWidth = 1.3;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+            drop.y += drop.speed;
+            drop.x -= drop.speed * 0.2;
+            if (drop.y > height) { drop.y = -drop.length; drop.x = Math.random() * width; }
+        }
+        if (currentEffect === 'thunderstorm') {
+            if (Math.random() < 0.035 && flashOpacity <= 0) flashOpacity = Math.random() * 0.8 + 0.2;
+            if (flashOpacity > 0) {
+                ctx.fillStyle = `rgba(238, 242, 255, ${flashOpacity})`;
+                ctx.fillRect(0, 0, width, height);
+                flashOpacity -= 0.05;
+            }
+        }
+    } else if (currentEffect === 'sunny') {
+        for (let ray of sunRays) {
+            ctx.beginPath();
+            ctx.arc(ray.x, ray.y, ray.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(253, 224, 71, ${ray.opacity})`;
+            ctx.fill();
+            ray.y -= ray.speed;
+            if (ray.y + ray.radius < 0) { ray.y = height + ray.radius; ray.x = Math.random() * width; }
+        }
+    }
+    requestAnimationFrame(animateWeather);
+}
+animateWeather();
+
 let map = null, marker = null;
 
-// Water Droplet Ripple Effect Script
 function createWaterRipple(event) {
     const button = event.currentTarget;
     const circle = document.createElement("span");
     const diameter = Math.max(button.clientWidth, button.clientHeight);
     const radius = diameter / 2;
-
     const rect = button.getBoundingClientRect();
     circle.style.width = circle.style.height = `${diameter}px`;
     circle.style.left = `${event.clientX - rect.left - radius}px`;
     circle.style.top = `${event.clientY - rect.top - radius}px`;
     circle.classList.add("water-ripple");
-
     const existingRipple = button.querySelector(".water-ripple");
-    if (existingRipple) {
-        existingRipple.remove();
-    }
-
+    if (existingRipple) existingRipple.remove();
     button.appendChild(circle);
-
-    // Kusa ring tatanggalin sa DOM kapag natapos na ang animation
-    setTimeout(() => {
-        circle.remove();
-    }, 750);
+    setTimeout(() => circle.remove(), 750);
 }
-
-document.querySelectorAll('.btn-ripple').forEach(button => {
-    button.addEventListener('click', createWaterRipple);
-});
+document.querySelectorAll('.btn-ripple').forEach(btn => btn.addEventListener('click', createWaterRipple));
 
 function updateClock() {
     const now = new Date();
-    document.getElementById('live-clock').textContent = now.toLocaleString('tl-PH', { 
+    const locale = currentLang === 'tl' ? 'tl-PH' : 'en-US';
+    document.getElementById('live-clock').textContent = now.toLocaleString(locale, { 
         weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
         hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true 
     });
@@ -359,7 +732,7 @@ function searchLocation() {
     const query = document.getElementById('city-input').value.trim();
     if (!query) return;
     document.getElementById('status').style.display = 'block';
-    document.getElementById('status').textContent = `Hina-hanap ang "${query}"...`;
+    document.getElementById('status').textContent = i18n[currentLang].statusSearching.replace('{query}', query);
     
     fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`)
         .then(res => res.json())
@@ -371,14 +744,14 @@ function searchLocation() {
                 fetchWeather(lat, lon);
                 initMap(lat, lon);
             } else { 
-                document.getElementById('status').textContent = 'Hindi nahanap ang lugar.'; 
+                document.getElementById('status').textContent = i18n[currentLang].statusNotFound; 
             }
         });
 }
 
 function getWeather() {
     document.getElementById('status').style.display = 'block';
-    document.getElementById('status').textContent = 'Kinu-kuha ang GPS...';
+    document.getElementById('status').textContent = i18n[currentLang].statusFetchingGPS;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (pos) => {
@@ -414,110 +787,124 @@ async function fetchWeather(lat, lon) {
 
     try {
         const response = await fetch(apiUrl);
-        const data = await response.json();
-        const current = data.current;
-        const daily = data.daily;
-
-        document.getElementById('temperature').textContent = `${Math.round(current.temperature_2m)}°C`;
-        const windSpeed = Math.round(current.windspeed_10m);
-        const windGusts = Math.round(current.windgusts_10m || windSpeed);
-        document.getElementById('windspeed').textContent = `${windSpeed} km/h`;
-        document.getElementById('humidity').textContent = `${current.relativehumidity_2m}%`;
-        document.getElementById('weather-code').textContent = parseWeatherCodeNow(current.weathercode);
-        document.getElementById('rain-prob').textContent = `${daily.precipitation_probability_max[0] || 0}%`;
-
-        const rainAmount = current.rain || current.precipitation || 0;
-        const rainBox = document.getElementById('rain-box');
-        const rainStatusText = document.getElementById('rain-status');
-        rainBox.className = 'info-box';
-
-        if (rainAmount > 30.0) {
-            rainBox.classList.add('status-red');
-            rainStatusText.textContent = '🔴 RED: Evacuate!';
-        } else if (rainAmount >= 15.0) {
-            rainBox.classList.add('status-orange');
-            rainStatusText.textContent = '🟠 ORANGE: Alert!';
-        } else if (rainAmount >= 7.5) {
-            rainBox.classList.add('status-yellow');
-            rainStatusText.textContent = '🟡 YELLOW: Monitor';
-        } else if (rainAmount > 0) {
-            rainBox.classList.add('status-yellow');
-            rainStatusText.textContent = '🌧️ Katamtamang ulan';
-        } else {
-            rainBox.classList.add('status-green');
-            rainStatusText.textContent = '☀️ Walang ulan';
-        }
-
-        const typhoonBox = document.getElementById('typhoon-box');
-        const typhoonStatusText = document.getElementById('typhoon-status');
-        typhoonBox.className = 'info-box';
-
-        if (windSpeed >= 185 || windGusts >= 220) {
-            typhoonBox.classList.add('status-purple');
-            typhoonStatusText.textContent = '🌀 Super Typhoon (#5)';
-        } else if (windSpeed >= 118 || windGusts >= 184) {
-            typhoonBox.classList.add('status-purple');
-            typhoonStatusText.textContent = '🌀 Typhoon Signal (#3-#4)';
-        } else if (windSpeed >= 62 || windGusts >= 88) {
-            typhoonBox.classList.add('status-purple');
-            typhoonStatusText.textContent = '🌀 Severe Storm (#2)';
-        } else if (windSpeed >= 39) {
-            typhoonBox.classList.add('status-purple');
-            typhoonStatusText.textContent = '🌀 Tropical Depression (#1)';
-        } else if ((windSpeed >= 20 && rainAmount > 2.5) || (rainAmount > 7.5)) {
-            typhoonBox.classList.add('status-red');
-            typhoonStatusText.textContent = '🌧️ Dulot ng LPA / Habagat';
-        } else if (rainAmount > 0 || current.weathercode >= 50) {
-            typhoonBox.classList.add('status-yellow');
-            typhoonStatusText.textContent = '🌦️ Thunderstorm';
-        } else {
-            typhoonBox.classList.add('status-green');
-            typhoonStatusText.textContent = '☀️ Ligtas / Walang bagyo';
-        }
-
-        // FORECAST PARA SA BUKAS (Future Tense Text Fix)
-        const tmrCode = daily.weathercode[1];
-        const tmrMax = Math.round(daily.temperature_2m_max[1]);
-        const tmrMin = Math.round(daily.temperature_2m_min[1]);
-        const tmrRainProb = daily.precipitation_probability_max[1] || 0;
-        const tmrRainSum = (daily.precipitation_sum[1] || 0).toFixed(1);
-        const tmrWind = Math.round(daily.windspeed_10m_max[1] || 0);
-
-        document.getElementById('tmr-condition').textContent = parseWeatherCodeFuture(tmrCode);
-        document.getElementById('tmr-temp').textContent = `${tmrMax}° / ${tmrMin}°C`;
-        document.getElementById('tmr-rain-prob').textContent = `${tmrRainProb}%`;
-        document.getElementById('tmr-rain-sum').textContent = `${tmrRainSum} mm`;
-        document.getElementById('tmr-wind').textContent = `${tmrWind} km/h`;
-
-        let tmrWarningText = '☀️ Maayos ang panahon';
-        let tmrStatusText = 'Maayos';
-
-        if (tmrWind >= 39) {
-            tmrWarningText = '🌀 May banta ng bagyo';
-            tmrStatusText = 'May Signal';
-        } else if (tmrRainSum >= 30) {
-            tmrWarningText = '🔴 RED Warning: Banta ng baha';
-            tmrStatusText = 'Mapanganib';
-        } else if (tmrRainSum >= 15) {
-            tmrWarningText = '🟠 ORANGE Warning: Heavy Rain';
-            tmrStatusText = 'Alert';
-        } else if (tmrRainSum >= 7.5) {
-            tmrWarningText = '🟡 YELLOW Warning: May ulan';
-            tmrStatusText = 'Monitor';
-        } else if (tmrRainSum > 0 || tmrRainProb >= 50) {
-            tmrWarningText = '🌦️ May pag-ulan / Thunderstorm';
-            tmrStatusText = 'Uuulan';
-        }
-
-        document.getElementById('tmr-warning').textContent = tmrWarningText;
-        document.getElementById('tmr-status').textContent = tmrStatusText;
-
-        document.getElementById('update-time').textContent = new Date().toLocaleTimeString('tl-PH', { hour: '2-digit', minute: '2-digit', hour12: true });
-        document.getElementById('status').style.display = 'none';
-        document.getElementById('weather-data').style.display = 'flex';
+        currentWeatherData = await response.json();
+        renderWeatherUI(currentWeatherData);
     } catch (e) {
-        document.getElementById('status').textContent = 'Error sa pagkuha ng data.';
+        document.getElementById('status').textContent = 'Error fetching data.';
     }
+}
+
+function renderWeatherUI(data) {
+    const current = data.current;
+    const daily = data.daily;
+    const isEn = currentLang === 'en';
+
+    document.getElementById('temperature').textContent = `${Math.round(current.temperature_2m)}°C`;
+    const windSpeed = Math.round(current.windspeed_10m);
+    const windGusts = Math.round(current.windgusts_10m || windSpeed);
+    const rainProbToday = daily.precipitation_probability_max[0] || 0;
+    const rainAmount = current.rain || current.precipitation || 0;
+
+    document.getElementById('windspeed').textContent = `${windSpeed} km/h`;
+    document.getElementById('humidity').textContent = `${current.relativehumidity_2m}%`;
+    document.getElementById('weather-code').textContent = parseWeatherCodeNow(current.weathercode);
+    document.getElementById('rain-prob').textContent = `${rainProbToday}%`;
+
+    // 1. Rainfall Warning
+    const rainBox = document.getElementById('rain-box');
+    const rainStatusText = document.getElementById('rain-status');
+    rainBox.className = 'info-box';
+
+    if (rainAmount > 30.0) {
+        rainBox.classList.add('status-red');
+        rainStatusText.textContent = '🔴 RED: Evacuate!';
+    } else if (rainAmount >= 15.0) {
+        rainBox.classList.add('status-orange');
+        rainStatusText.textContent = '🟠 ORANGE: Alert!';
+    } else if (rainAmount >= 7.5) {
+        rainBox.classList.add('status-yellow');
+        rainStatusText.textContent = '🟡 YELLOW: Monitor';
+    } else if (rainAmount > 0 || rainProbToday >= 75) {
+        rainBox.classList.add('status-yellow');
+        rainStatusText.textContent = isEn ? '🌧️ Rain Threat' : '🌧️ Banta ng Pag-ulan';
+    } else {
+        rainBox.classList.add('status-green');
+        rainStatusText.textContent = isEn ? '☀️ No Rain' : '☀️ Walang ulan';
+    }
+
+    // 2. Wind Signal
+    const typhoonBox = document.getElementById('typhoon-box');
+    const typhoonStatusText = document.getElementById('typhoon-status');
+    typhoonBox.className = 'info-box';
+    let isThunderstorm = false;
+
+    if (windSpeed >= 185 || windGusts >= 220) {
+        typhoonBox.classList.add('status-purple');
+        typhoonStatusText.textContent = '🌀 Super Typhoon (#5)';
+    } else if (windSpeed >= 118 || windGusts >= 184) {
+        typhoonBox.classList.add('status-purple');
+        typhoonStatusText.textContent = '🌀 Typhoon Signal (#3-#4)';
+    } else if (windSpeed >= 62 || windGusts >= 88) {
+        typhoonBox.classList.add('status-purple');
+        typhoonStatusText.textContent = '🌀 Severe Storm (#2)';
+    } else if (windSpeed >= 30 || (windSpeed >= 20 && rainProbToday >= 70) || rainProbToday >= 85) {
+        typhoonBox.classList.add('status-purple');
+        typhoonStatusText.textContent = '🌀 Tropical Depression (#1)';
+    } else if (current.weathercode >= 95) {
+        typhoonBox.classList.add('status-yellow');
+        typhoonStatusText.textContent = '🌩️ Thunderstorm';
+        isThunderstorm = true;
+    } else if (rainAmount > 0 || rainProbToday >= 60) {
+        typhoonBox.classList.add('status-yellow');
+        typhoonStatusText.textContent = isEn ? '🌧️ Bad Weather / LPA' : '🌧️ Masamang Panahon / LPA';
+    } else {
+        typhoonBox.classList.add('status-green');
+        typhoonStatusText.textContent = isEn ? '☀️ Safe / Clear' : '☀️ Ligtas / Walang bagyo';
+    }
+
+    setWeatherEffect(current.weathercode, rainAmount > 0 ? rainAmount : (rainProbToday >= 60 ? 1 : 0), isThunderstorm);
+
+    // Tomorrow Forecast
+    const tmrCode = daily.weathercode[1];
+    const tmrMax = Math.round(daily.temperature_2m_max[1]);
+    const tmrMin = Math.round(daily.temperature_2m_min[1]);
+    const tmrRainProb = daily.precipitation_probability_max[1] || 0;
+    const tmrRainSum = (daily.precipitation_sum[1] || 0).toFixed(1);
+    const tmrWind = Math.round(daily.windspeed_10m_max[1] || 0);
+
+    document.getElementById('tmr-condition').textContent = parseWeatherCodeFuture(tmrCode);
+    document.getElementById('tmr-temp').textContent = `${tmrMax}° / ${tmrMin}°C`;
+    document.getElementById('tmr-rain-prob').textContent = `${tmrRainProb}%`;
+    document.getElementById('tmr-rain-sum').textContent = `${tmrRainSum} mm`;
+    document.getElementById('tmr-wind').textContent = `${tmrWind} km/h`;
+
+    let tmrWarningText = isEn ? '☀️ Fair weather' : '☀️ Maayos ang panahon';
+    let tmrStatusText = isEn ? 'Fair' : 'Maayos';
+
+    if (tmrWind >= 30 || tmrRainProb >= 70) {
+        tmrWarningText = isEn ? '🌀 Storm threat / LPA' : '🌀 May banta ng bagyo / LPA';
+        tmrStatusText = isEn ? 'Alert' : 'May Alert';
+    } else if (tmrRainSum >= 30) {
+        tmrWarningText = isEn ? '🔴 RED Warning: Flood Risk' : '🔴 RED Warning: Banta ng baha';
+        tmrStatusText = isEn ? 'Dangerous' : 'Mapanganib';
+    } else if (tmrRainSum >= 15) {
+        tmrWarningText = isEn ? '🟠 ORANGE Warning: Heavy Rain' : '🟠 ORANGE Warning: Heavy Rain';
+        tmrStatusText = 'Alert';
+    } else if (tmrRainSum >= 7.5) {
+        tmrWarningText = isEn ? '🟡 YELLOW Warning: Rain expected' : '🟡 YELLOW Warning: May ulan';
+        tmrStatusText = 'Monitor';
+    } else if (tmrRainSum > 0 || tmrRainProb >= 50) {
+        tmrWarningText = isEn ? '🌦️ Expected Rain / Thunderstorm' : '🌦️ May pag-ulan / Thunderstorm';
+        tmrStatusText = isEn ? 'Rainy' : 'Uuulan';
+    }
+
+    document.getElementById('tmr-warning').textContent = tmrWarningText;
+    document.getElementById('tmr-status').textContent = tmrStatusText;
+
+    const locale = isEn ? 'en-US' : 'tl-PH';
+    document.getElementById('update-time').textContent = new Date().toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: true });
+    document.getElementById('status').style.display = 'none';
+    document.getElementById('weather-data').style.display = 'flex';
 }
 
 function initMap(lat, lon) {
@@ -533,23 +920,25 @@ function initMap(lat, lon) {
 }
 
 function parseWeatherCodeNow(code) {
-    if (code === 0) return 'Sikat ang araw';
-    if (code >= 1 && code <= 3) return 'Bahagyang maulap';
-    if (code >= 45 && code <= 48) return 'May fog';
-    if (code >= 51 && code <= 67) return 'May pag-ulan';
-    if (code >= 80 && code <= 82) return 'Umuulan';
-    if (code >= 95) return 'May Bagyo / Kidlat';
-    return 'Maulap';
+    const isEn = currentLang === 'en';
+    if (code === 0) return isEn ? 'Sunny / Clear' : 'Sikat ang araw';
+    if (code >= 1 && code <= 3) return isEn ? 'Partly Cloudy' : 'Bahagyang maulap';
+    if (code >= 45 && code <= 48) return isEn ? 'Foggy' : 'May fog';
+    if (code >= 51 && code <= 67) return isEn ? 'Light Rain / Drizzle' : 'May pag-ulan';
+    if (code >= 80 && code <= 82) return isEn ? 'Heavy Rain' : 'Umuulan';
+    if (code >= 95) return isEn ? 'Thunderstorm' : 'May Bagyo / Kidlat';
+    return isEn ? 'Cloudy' : 'Maulap';
 }
 
 function parseWeatherCodeFuture(code) {
-    if (code === 0) return 'Masikat ang araw';
-    if (code >= 1 && code <= 3) return 'Maging bahagyang maulap';
-    if (code >= 45 && code <= 48) return 'Magkakaroon ng fog';
-    if (code >= 51 && code <= 67) return 'May inaasahang pag-ulan';
-    if (code >= 80 && code <= 82) return 'Uuulan';
-    if (code >= 95) return 'May banta ng bagyo / kidlat';
-    return 'Maging maulap';
+    const isEn = currentLang === 'en';
+    if (code === 0) return isEn ? 'Sunny / Clear' : 'Masikat ang araw';
+    if (code >= 1 && code <= 3) return isEn ? 'Partly Cloudy' : 'Maging bahagyang maulap';
+    if (code >= 45 && code <= 48) return isEn ? 'Foggy conditions' : 'Magkakaroon ng fog';
+    if (code >= 51 && code <= 67) return isEn ? 'Expected Rain Showers' : 'May inaasahang pag-ulan';
+    if (code >= 80 && code <= 82) return isEn ? 'Heavy Rain Expected' : 'Uuulan';
+    if (code >= 95) return isEn ? 'Thunderstorm Threat' : 'May banta ng bagyo / kidlat';
+    return isEn ? 'Cloudy' : 'Maging maulap';
 }
 
 getWeather();
