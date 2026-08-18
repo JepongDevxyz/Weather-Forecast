@@ -10,150 +10,236 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #0f172a;
             min-height: 100vh;
+            color: #f8fafc;
+            padding: 16px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
-            color: #ffffff;
         }
-        .weather-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 24px;
-            padding: 32px 28px;
+
+        .dashboard-container {
             width: 100%;
-            max-width: 540px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            text-align: center;
+            max-width: 720px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin: 0 auto;
         }
-        .header h2 { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+
+        .header { text-align: center; }
+        .header h2 { font-size: 20px; font-weight: 600; color: #f8fafc; letter-spacing: -0.5px; }
         .clock {
-            font-size: 13px;
-            color: #e0e0e0;
-            background: rgba(255, 255, 255, 0.1);
-            display: inline-block;
-            padding: 6px 14px;
-            border-radius: 20px;
-            margin-bottom: 15px;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+            margin-bottom: 8px;
         }
-        .search-box { display: flex; gap: 8px; margin-bottom: 15px; }
+
+        .search-box { display: flex; gap: 8px; width: 100%; }
         .search-input {
-            flex: 1; padding: 12px 16px; border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.25); color: #fff; font-size: 14px; outline: none;
-        }
-        .btn-search {
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
-            color: white; border: none; padding: 12px 18px;
-            border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 14px;
-        }
-        .location-name { font-size: 18px; font-weight: 700; color: #4facfe; margin: 5px 0; }
-        .status-msg { font-size: 14px; color: #ffda79; margin: 10px 0; }
-        .main-weather { margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 16px; }
-        .temp { font-size: 56px; font-weight: 800; line-height: 1; margin-bottom: 8px; }
-        .condition-badge {
-            display: inline-block; background: rgba(79, 172, 254, 0.2);
-            color: #00f2fe; padding: 6px 16px; border-radius: 12px; font-size: 15px; font-weight: 600;
-        }
-        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
-        .info-box { background: rgba(0, 0, 0, 0.2); padding: 12px 10px; border-radius: 12px; text-align: center; }
-        
-        .info-box.status-green { background: rgba(46, 213, 115, 0.2) !important; border: 1px solid rgba(46, 213, 115, 0.5) !important; }
-        .info-box.status-green .value { color: #2ed573 !important; }
-        .info-box.status-yellow { background: rgba(254, 202, 87, 0.2) !important; border: 1px solid rgba(254, 202, 87, 0.5) !important; }
-        .info-box.status-yellow .value { color: #feca57 !important; }
-        .info-box.status-orange { background: rgba(255, 159, 67, 0.2) !important; border: 1px solid rgba(255, 159, 67, 0.5) !important; }
-        .info-box.status-orange .value { color: #ff9f43 !important; }
-        .info-box.status-red { background: rgba(255, 71, 87, 0.2) !important; border: 1px solid rgba(255, 71, 87, 0.5) !important; }
-        .info-box.status-red .value { color: #ff4757 !important; }
-        .info-box.status-purple { background: rgba(155, 89, 182, 0.2) !important; border: 1px solid rgba(155, 89, 182, 0.5) !important; }
-        .info-box.status-purple .value { color: #a55fea !important; }
-
-        .info-box .label { font-size: 11px; text-transform: uppercase; color: #aaa; margin-bottom: 4px; }
-        .info-box .value { font-size: 13px; font-weight: 600; color: #fff; }
-
-        /* Fixed & Aligned Tomorrow Box Styling */
-        .tomorrow-box {
-            margin-top: 18px;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.07);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            text-align: left;
-        }
-
-        .tomorrow-title {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: #fff;
             font-size: 13px;
-            font-weight: 700;
-            color: #00f2fe;
-            margin-bottom: 12px;
+            outline: none;
+            min-width: 0;
         }
 
+        /* Base Styling para sa Buttons */
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+        .btn-ripple:active {
+            transform: scale(0.98);
+        }
+
+        /* Water Ripple Effect Animation */
+        .water-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.6) 0%, rgba(255, 255, 255, 0.3) 40%, rgba(56, 189, 248, 0) 70%);
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.8), 0 0 12px rgba(56, 189, 248, 0.5);
+            transform: scale(0);
+            pointer-events: none;
+            animation: water-wave 0.75s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+
+        @keyframes water-wave {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            80% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(3.5);
+                opacity: 0;
+            }
+        }
+
+        .btn-search {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .location-name { font-size: 18px; font-weight: 600; color: #38bdf8; text-align: center; }
+        .status-msg { font-size: 13px; color: #fbbf24; text-align: center; }
+
+        .main-weather {
+            text-align: center;
+            padding: 16px;
+            background: #1e293b;
+            border-radius: 12px;
+            border: 1px solid #334155;
+        }
+        .temp { font-size: 52px; font-weight: 700; line-height: 1; letter-spacing: -1px; margin-bottom: 6px; }
+        .condition-badge {
+            display: inline-block;
+            color: #38bdf8;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        @media (min-width: 500px) {
+            .info-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .info-box {
+            background: #1e293b;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info-box.status-green { border-color: #22c55e !important; }
+        .info-box.status-green .value { color: #4ade80 !important; }
+        .info-box.status-yellow { border-color: #eab308 !important; }
+        .info-box.status-yellow .value { color: #fde047 !important; }
+        .info-box.status-orange { border-color: #f97316 !important; }
+        .info-box.status-orange .value { color: #fb923c !important; }
+        .info-box.status-red { border-color: #ef4444 !important; }
+        .info-box.status-red .value { color: #f87171 !important; }
+        .info-box.status-purple { border-color: #a855f7 !important; }
+        .info-box.status-purple .value { color: #c084fc !important; }
+
+        .info-box .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 2px; }
+        .info-box .value { font-size: 12px; font-weight: 600; color: #f8fafc; word-break: break-word; }
+
+        /* Minimalist Tomorrow Forecast Section */
+        .tomorrow-box {
+            padding: 14px;
+            background: #1e293b;
+            border-radius: 12px;
+            border: 1px solid #334155;
+        }
+        .tomorrow-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #38bdf8;
+            margin-bottom: 10px;
+        }
+        
         .tomorrow-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: baseline;
             gap: 12px;
-            margin-bottom: 12px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #334155;
         }
 
         .tmr-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-            font-size: 12px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        @media (min-width: 500px) {
+            .tmr-grid { grid-template-columns: repeat(4, 1fr); }
         }
 
         .tmr-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 8px 10px;
+            background: #0f172a;
+            padding: 8px;
             border-radius: 8px;
-            gap: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            text-align: center;
+            border: 1px solid #1e293b;
+        }
+
+        .tmr-item span { font-size: 10px; color: #94a3b8; }
+        .tmr-item b { font-size: 12px; font-weight: 600; color: #f8fafc; word-break: break-word; }
+
+        .map-container {
+            border-radius: 12px;
             overflow: hidden;
+            height: 200px;
+            width: 100%;
+            border: 1px solid #334155;
         }
-
-        .tmr-item span {
-            white-space: nowrap;
-            opacity: 0.9;
-        }
-
-        .tmr-item b {
-            white-space: nowrap;
-            color: #fff;
-        }
-
-        .map-container { margin-top: 18px; border-radius: 16px; overflow: hidden; height: 180px; width: 100%; }
         #map { width: 100%; height: 100%; }
-        .last-updated { font-size: 11px; color: rgba(255, 255, 255, 0.6); margin-top: 15px; }
-        .btn-my-location { width: 100%; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 12px; border-radius: 14px; cursor: pointer; margin-top: 15px; font-weight: 600; }
+
+        .btn-my-location {
+            width: 100%;
+            background: #1e293b;
+            color: #f8fafc;
+            border: 1px solid #334155;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .last-updated { font-size: 11px; color: #64748b; text-align: center; margin-top: 6px; }
     </style>
 </head>
 <body>
 
-<div class="weather-card">
+<div class="dashboard-container">
     <div class="header">
         <h2>Ulat ng Panahon</h2>
         <div class="clock" id="live-clock">--:--:-- --</div>
     </div>
 
     <div class="search-box">
-        <input type="text" id="city-input" class="search-input" placeholder="Mag-search ng lugar (hal. Manila, Baguio)" onkeydown="if(event.key==='Enter') searchLocation()">
-        <button class="btn-search" onclick="searchLocation()">Search</button>
+        <input type="text" id="city-input" class="search-input" placeholder="Mag-search ng lugar..." onkeydown="if(event.key==='Enter') searchLocation()">
+        <button class="btn-search btn-ripple" onclick="searchLocation()">Search</button>
     </div>
 
     <div class="location-name" id="location-name">---</div>
     <div class="status-msg" id="status">Kina-kalkula ang GPS...</div>
 
-    <div id="weather-data" style="display:none;">
+    <div id="weather-data" style="display:none;" class="dashboard-container">
         <div class="main-weather">
             <div class="temp" id="temperature">--°C</div>
             <div class="condition-badge" id="weather-code">--</div>
@@ -166,7 +252,7 @@
             </div>
             <div class="info-box" id="typhoon-box">
                 <div class="label">PAGASA Wind Signal</div>
-                <div class="value" id="typhoon-status">Nave-verify...</div>
+                <div class="value" id="typhoon-status">Nagbi-verify...</div>
             </div>
             <div class="info-box">
                 <div class="label">Tsansa ng Ulan Ngayon</div>
@@ -186,33 +272,33 @@
             </div>
         </div>
 
-        <!-- Dynamic Forecast Para sa Bukas -->
+        <!-- Minimalist Tomorrow Forecast -->
         <div class="tomorrow-box">
-            <div class="tomorrow-title">📅 ACCURATE FORECAST PARA BUKAS</div>
+            <div class="tomorrow-title">Forecast Para Bukas</div>
             
             <div class="tomorrow-header">
-                <div style="flex: 1; min-width: 0;">
-                    <div style="font-size:15px; font-weight:700; word-wrap: break-word;" id="tmr-condition">--</div>
-                    <div style="font-size:12px; color:#ffda79; margin-top:3px; word-wrap: break-word;" id="tmr-warning">--</div>
+                <div>
+                    <div style="font-size:14px; font-weight:600;" id="tmr-condition">--</div>
+                    <div style="font-size:11px; color:#fbbf24; margin-top:2px;" id="tmr-warning">--</div>
                 </div>
-                <div style="font-size:20px; font-weight:800; color:#00f2fe; white-space: nowrap;" id="tmr-temp">--° / --°</div>
+                <div style="font-size:18px; font-weight:700; color:#38bdf8;" id="tmr-temp">--° / --°</div>
             </div>
 
             <div class="tmr-grid">
                 <div class="tmr-item">
-                    <span>☔ Tsansa:</span>
+                    <span>☔ Tsansa</span>
                     <b id="tmr-rain-prob">--%</b>
                 </div>
                 <div class="tmr-item">
-                    <span>🌧️ Inaasahan:</span>
+                    <span>🌧️ Inaasahan</span>
                     <b id="tmr-rain-sum">-- mm</b>
                 </div>
                 <div class="tmr-item">
-                    <span>💨 Hangin:</span>
+                    <span>💨 Hangin</span>
                     <b id="tmr-wind">-- km/h</b>
                 </div>
                 <div class="tmr-item">
-                    <span>🌀 Status:</span>
+                    <span>🌀 Status</span>
                     <b id="tmr-status">--</b>
                 </div>
             </div>
@@ -222,14 +308,43 @@
             <div id="map"></div>
         </div>
 
+        <button class="btn-my-location btn-ripple" onclick="getWeather()">📍 I-check ang lokasyon ko</button>
         <div class="last-updated">Huling na-update: <span id="update-time">--</span><br><br>Jepong Devxyz</div>
     </div>
-
-    <button class="btn-my-location" onclick="getWeather()">📍I-check ang lokasyon ko</button>
 </div>
 
 <script>
 let map = null, marker = null;
+
+// Water Droplet Ripple Effect Script
+function createWaterRipple(event) {
+    const button = event.currentTarget;
+    const circle = document.createElement("span");
+    const diameter = Math.max(button.clientWidth, button.clientHeight);
+    const radius = diameter / 2;
+
+    const rect = button.getBoundingClientRect();
+    circle.style.width = circle.style.height = `${diameter}px`;
+    circle.style.left = `${event.clientX - rect.left - radius}px`;
+    circle.style.top = `${event.clientY - rect.top - radius}px`;
+    circle.classList.add("water-ripple");
+
+    const existingRipple = button.querySelector(".water-ripple");
+    if (existingRipple) {
+        existingRipple.remove();
+    }
+
+    button.appendChild(circle);
+
+    // Kusa ring tatanggalin sa DOM kapag natapos na ang animation
+    setTimeout(() => {
+        circle.remove();
+    }, 750);
+}
+
+document.querySelectorAll('.btn-ripple').forEach(button => {
+    button.addEventListener('click', createWaterRipple);
+});
 
 function updateClock() {
     const now = new Date();
@@ -303,13 +418,12 @@ async function fetchWeather(lat, lon) {
         const current = data.current;
         const daily = data.daily;
 
-        // DATA NGAYON
         document.getElementById('temperature').textContent = `${Math.round(current.temperature_2m)}°C`;
         const windSpeed = Math.round(current.windspeed_10m);
         const windGusts = Math.round(current.windgusts_10m || windSpeed);
         document.getElementById('windspeed').textContent = `${windSpeed} km/h`;
         document.getElementById('humidity').textContent = `${current.relativehumidity_2m}%`;
-        document.getElementById('weather-code').textContent = parseWeatherCode(current.weathercode);
+        document.getElementById('weather-code').textContent = parseWeatherCodeNow(current.weathercode);
         document.getElementById('rain-prob').textContent = `${daily.precipitation_probability_max[0] || 0}%`;
 
         const rainAmount = current.rain || current.precipitation || 0;
@@ -361,7 +475,7 @@ async function fetchWeather(lat, lon) {
             typhoonStatusText.textContent = '☀️ Ligtas / Walang bagyo';
         }
 
-        // ACCURATE FORECAST LOGIC PARA SA BUKAS (Index 1)
+        // FORECAST PARA SA BUKAS (Future Tense Text Fix)
         const tmrCode = daily.weathercode[1];
         const tmrMax = Math.round(daily.temperature_2m_max[1]);
         const tmrMin = Math.round(daily.temperature_2m_min[1]);
@@ -369,13 +483,12 @@ async function fetchWeather(lat, lon) {
         const tmrRainSum = (daily.precipitation_sum[1] || 0).toFixed(1);
         const tmrWind = Math.round(daily.windspeed_10m_max[1] || 0);
 
-        document.getElementById('tmr-condition').textContent = parseWeatherCode(tmrCode);
+        document.getElementById('tmr-condition').textContent = parseWeatherCodeFuture(tmrCode);
         document.getElementById('tmr-temp').textContent = `${tmrMax}° / ${tmrMin}°C`;
         document.getElementById('tmr-rain-prob').textContent = `${tmrRainProb}%`;
         document.getElementById('tmr-rain-sum').textContent = `${tmrRainSum} mm`;
         document.getElementById('tmr-wind').textContent = `${tmrWind} km/h`;
 
-        // Classification Bukas batay sa PAGASA Rules
         let tmrWarningText = '☀️ Maayos ang panahon';
         let tmrStatusText = 'Maayos';
 
@@ -393,7 +506,7 @@ async function fetchWeather(lat, lon) {
             tmrStatusText = 'Monitor';
         } else if (tmrRainSum > 0 || tmrRainProb >= 50) {
             tmrWarningText = '🌦️ May pag-ulan / Thunderstorm';
-            tmrStatusText = 'Basa';
+            tmrStatusText = 'Uuulan';
         }
 
         document.getElementById('tmr-warning').textContent = tmrWarningText;
@@ -401,7 +514,7 @@ async function fetchWeather(lat, lon) {
 
         document.getElementById('update-time').textContent = new Date().toLocaleTimeString('tl-PH', { hour: '2-digit', minute: '2-digit', hour12: true });
         document.getElementById('status').style.display = 'none';
-        document.getElementById('weather-data').style.display = 'block';
+        document.getElementById('weather-data').style.display = 'flex';
     } catch (e) {
         document.getElementById('status').textContent = 'Error sa pagkuha ng data.';
     }
@@ -419,7 +532,7 @@ function initMap(lat, lon) {
     setTimeout(() => map.invalidateSize(), 200);
 }
 
-function parseWeatherCode(code) {
+function parseWeatherCodeNow(code) {
     if (code === 0) return 'Sikat ang araw';
     if (code >= 1 && code <= 3) return 'Bahagyang maulap';
     if (code >= 45 && code <= 48) return 'May fog';
@@ -427,6 +540,16 @@ function parseWeatherCode(code) {
     if (code >= 80 && code <= 82) return 'Umuulan';
     if (code >= 95) return 'May Bagyo / Kidlat';
     return 'Maulap';
+}
+
+function parseWeatherCodeFuture(code) {
+    if (code === 0) return 'Masikat ang araw';
+    if (code >= 1 && code <= 3) return 'Maging bahagyang maulap';
+    if (code >= 45 && code <= 48) return 'Magkakaroon ng fog';
+    if (code >= 51 && code <= 67) return 'May inaasahang pag-ulan';
+    if (code >= 80 && code <= 82) return 'Uuulan';
+    if (code >= 95) return 'May banta ng bagyo / kidlat';
+    return 'Maging maulap';
 }
 
 getWeather();
