@@ -22,15 +22,11 @@
             transition: background 1s ease;
         }
 
-        /* ==================== PRELOADER STYLES ==================== */
+        /* ==================== PRELOADER START ==================== */
         #preloader {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background-color: #0d0d0d;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            z-index: 999999;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #0d0d0d; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 999999;
             transition: opacity 0.6s ease, visibility 0.6s ease;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
@@ -44,31 +40,33 @@
 
         @keyframes ripple {
             0% { top: 32px; left: 32px; width: 0; height: 0; opacity: 0; }
+            4.9% { top: 32px; left: 32px; width: 0; height: 0; opacity: 0; }
             5% { top: 32px; left: 32px; width: 0; height: 0; opacity: 1; }
             100% { top: 0px; left: 0px; width: 64px; height: 64px; opacity: 0; }
         }
 
         .brand-title {
-            color: #ffffff; font-size: 1.8rem; font-weight: 700; letter-spacing: 2px;
+            color: #ffffff; font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; margin: 0;
             text-transform: uppercase; background: linear-gradient(45deg, #ff5722, #38b6ff);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
         .status-badge {
             display: flex; align-items: center; gap: 8px; margin-top: 14px; padding: 6px 14px;
-            background: rgba(255, 255, 255, 0.05); border-radius: 20px; font-size: 0.85rem; color: #cccccc;
+            background: rgba(255, 255, 255, 0.05); border-radius: 20px; font-size: 0.85rem; color: #cccccc; letter-spacing: 0.5px;
         }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; background-color: #ff9f0a; transition: all 0.3s ease; }
+
+        .status-dot {
+            width: 10px; height: 10px; border-radius: 50%; background-color: #ff9f0a;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
         .status-dot.active { background-color: #30d158; box-shadow: 0 0 10px #30d158; }
         .status-dot.down { background-color: #ff3b30; box-shadow: 0 0 10px #ff3b30; }
 
         #preloader.preloader-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         /* ==================== PRELOADER END ==================== */
 
-        #weather-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 0;
-        }
+        #weather-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 
         .dashboard-container {
             width: 100%; max-width: 720px; display: flex; flex-direction: column;
@@ -95,39 +93,65 @@
             flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid #334155;
             background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(8px); color: #fff; font-size: 13px; outline: none;
         }
-
-        .btn-ripple { position: relative; overflow: hidden; cursor: pointer; outline: none; transition: transform 0.1s ease; }
-        .btn-ripple:active { transform: scale(0.98); }
-
-        .btn-search { background: #2563eb; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 500; font-size: 13px; }
+        .btn-search { background: #2563eb; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 500; font-size: 13px; cursor: pointer; }
+        
         .btn-pagasa-news {
             width: 100%; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff;
             border: 1px solid #38bdf8; padding: 10px; border-radius: 10px; font-weight: 600; font-size: 13px;
-            display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+            display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3); cursor: pointer;
         }
 
         .location-name { font-size: 18px; font-weight: 600; color: #38bdf8; text-align: center; }
         .status-msg { font-size: 13px; color: #fbbf24; text-align: center; }
 
-        .main-weather {
-            text-align: center; padding: 20px 16px; background: rgba(30, 41, 59, 0.75);
-            backdrop-filter: blur(12px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);
+        .main-weather-card {
+            background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px);
+            border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 14px;
         }
-        .temp { font-size: 56px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
-        .condition-badge { display: inline-block; color: #38bdf8; font-size: 15px; font-weight: 500; }
+
+        .temp-group { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
+        .main-temp-row { display: flex; align-items: baseline; justify-content: center; gap: 12px; margin: 4px 0; }
+        .temp { font-size: 52px; font-weight: 700; line-height: 1; letter-spacing: -1px; }
+        .feels-like { font-size: 13px; color: #94a3b8; }
+        .condition-badge { color: #f8fafc; font-size: 17px; font-weight: 500; margin-top: 4px; display: flex; align-items: center; gap: 6px; }
+        .selected-date-label { font-size: 13px; color: #38bdf8; font-weight: 600; }
+
+        .days-scroll-container {
+            display: flex; gap: 8px; overflow-x: auto; padding: 4px 0; width: 100%;
+            justify-content: flex-start; scrollbar-width: thin; scrollbar-color: #334155 transparent;
+        }
+        @media (min-width: 580px) { .days-scroll-container { justify-content: center; } }
+
+        .day-card {
+            flex: 0 0 auto; width: 68px; padding: 8px 4px; border-radius: 12px;
+            background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+            gap: 4px; cursor: pointer; transition: all 0.2s ease; text-align: center;
+        }
+        .day-card:hover { background: rgba(37, 99, 235, 0.2); border-color: #38bdf8; }
+        .day-card.active { background: rgba(37, 99, 235, 0.4); border: 1.5px solid #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+        .day-card .day-name { font-size: 12px; color: #94a3b8; font-weight: 600; }
+        .day-card.active .day-name { color: #38bdf8; }
+        .day-card .day-icon { font-size: 18px; }
+        .day-card .day-temp { font-size: 11px; font-weight: 600; color: #f8fafc; }
 
         .hourly-container {
             background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px);
-            border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px;
+            border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 16px 12px; position: relative; overflow: hidden;
         }
-        .hourly-title { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #38bdf8; margin-bottom: 10px; }
-        .hourly-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; }
-        .hourly-scroll::-webkit-scrollbar { height: 4px; }
-        .hourly-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .hourly-scroll-wrapper { position: relative; overflow-x: auto; scrollbar-width: thin; scrollbar-color: #334155 transparent; }
+        .hourly-track { display: flex; position: relative; min-width: max-content; padding: 10px 0 16px 0; z-index: 2; }
         .hourly-item {
-            flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 4px;
-            min-width: 60px; padding: 8px 6px; border-radius: 8px; background: rgba(15, 23, 42, 0.5); font-size: 12px;
+            width: 65px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+            height: 135px; text-align: center; font-size: 13px; position: relative;
         }
+        .hourly-item .h-temp { font-weight: 600; font-size: 15px; color: #ffffff; }
+        .hourly-item .h-icon { font-size: 22px; margin: 4px 0 2px 0; }
+        .hourly-item .h-rain { font-size: 11px; color: #38bdf8; font-weight: 600; min-height: 14px; }
+        .hourly-item .h-time { font-size: 12px; color: #94a3b8; margin-top: auto; }
+
+        .hourly-curve-svg { position: absolute; top: 35px; left: 0; height: 35px; width: 100%; pointer-events: none; z-index: 1; }
 
         .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         @media (min-width: 500px) { .info-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -141,10 +165,9 @@
         .info-box.status-yellow { border-color: #eab308 !important; } .info-box.status-yellow .value { color: #fde047 !important; }
         .info-box.status-orange { border-color: #f97316 !important; } .info-box.status-orange .value { color: #fb923c !important; }
         .info-box.status-red { border-color: #ef4444 !important; } .info-box.status-red .value { color: #f87171 !important; }
-        .info-box.status-purple { border-color: #a855f7 !important; } .info-box.status-purple .value { color: #c084fc !important; }
 
         .info-box .label { font-size: 10px; text-transform: uppercase; color: #94a3b8; margin-bottom: 2px; }
-        .info-box .value { font-size: 12px; font-weight: 600; color: #f8fafc; }
+        .info-box .value { font-size: 13px; font-weight: 600; color: #f8fafc; }
 
         .tomorrow-box, .radar-box {
             padding: 14px; background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px);
@@ -159,12 +182,13 @@
         .tmr-item span { font-size: 10px; color: #94a3b8; } .tmr-item b { font-size: 12px; font-weight: 600; color: #f8fafc; }
 
         .radar-iframe-container { width: 100%; height: 380px; border-radius: 10px; overflow: hidden; border: 1px solid #334155; margin-top: 8px; }
-        .map-container { border-radius: 12px; overflow: hidden; height: 200px; width: 100%; border: 1px solid #334155; }
+        .map-container { border-radius: 12px; overflow: hidden; height: 220px; width: 100%; border: 1px solid #334155; }
         #map { width: 100%; height: 100%; }
 
         .btn-my-location {
             width: 100%; background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(8px);
-            color: #f8fafc; border: 1px solid #334155; padding: 12px; border-radius: 10px; font-weight: 500; font-size: 13px;
+            color: #f8fafc; border: 1px solid #334155; padding: 12px; border-radius: 10px; font-weight: 500; font-size: 13px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
         }
         .last-updated { font-size: 11px; color: #64748b; text-align: center; margin-top: 6px; }
 
@@ -192,10 +216,14 @@
 </head>
 <body>
 
-<!-- PRELOADER -->
+<!-- EXACT OVERLAY MARKUP -->
 <div id="preloader">
-  <div class="ripple-loader" id="rippleLoader"><span></span><span></span></div>
+  <div class="ripple-loader" id="rippleLoader">
+    <span></span>
+    <span></span>
+  </div>
   <h1 class="brand-title">Jepong Devxyz</h1>
+  
   <div class="status-badge">
     <span class="status-dot" id="statusDot"></span>
     <span id="statusText" style="color: #ff9f0a;">Checking site status...</span>
@@ -217,25 +245,37 @@
 
     <div class="search-box">
         <input type="text" id="city-input" class="search-input" placeholder="Search location..." onkeydown="if(event.key==='Enter') searchLocation()">
-        <button class="btn-search btn-ripple" id="txt-btn-search" onclick="searchLocation()">Search</button>
+        <button class="btn-search" id="txt-btn-search" onclick="searchLocation()">Search</button>
     </div>
 
-    <button class="btn-pagasa-news btn-ripple" id="btn-pagasa-pop" onclick="openPagasaModal()">
+    <button class="btn-pagasa-news" id="btn-pagasa-pop" onclick="openPagasaModal()">
         <span>📢</span> <span id="lbl-pagasa-btn">PAGASA Weather Bulletins & Updates</span>
     </button>
 
-    <div class="location-name" id="location-name">---</div>
-    <div class="status-msg" id="status">Fetching GPS location...</div>
+    <button class="btn-my-location" id="btn-my-loc" onclick="getWeather()">📍 Check My Location</button>
 
-    <div id="weather-data" style="display:none;" class="dashboard-container">
-        <div class="main-weather">
-            <div class="temp" id="temperature">--°C</div>
-            <div class="condition-badge" id="weather-code">--</div>
+    <div class="location-name" id="location-name" style="display:none;">---</div>
+    <div class="status-msg" id="status">Click "Check My Location" or search a city to view weather forecast.</div>
+
+    <!-- INITIALLY HIDDEN WEATHER DATA -->
+    <div id="weather-data" style="display:none; flex-direction:column; gap:14px;">
+        <div class="main-weather-card">
+            <div class="temp-group">
+                <div class="selected-date-label" id="selected-date-lbl">Now</div>
+                <div class="main-temp-row">
+                    <div class="temp" id="temperature">--°</div>
+                    <div class="feels-like" id="feels-like">Feels like --°</div>
+                </div>
+                <div class="condition-badge" id="weather-code">--</div>
+            </div>
+            <div class="days-scroll-container" id="days-scroll-container"></div>
         </div>
 
         <div class="hourly-container">
-            <div class="hourly-title" id="lbl-hourly-title">Hourly Forecast</div>
-            <div class="hourly-scroll" id="hourly-list"></div>
+            <div class="hourly-scroll-wrapper">
+                <svg class="hourly-curve-svg" id="hourly-curve"></svg>
+                <div class="hourly-track" id="hourly-track"></div>
+            </div>
         </div>
 
         <div class="info-grid">
@@ -268,7 +308,7 @@
         <div class="radar-box">
             <div class="tomorrow-title" id="lbl-radar-title">🌀 PLAYABLE LIVE SATELLITE & RADAR MAP</div>
             <div class="radar-iframe-container">
-                <iframe id="windy-radar-frame" src="https://embed.windy.com/embed2.html?lat=13.0&lon=122.0&detailLat=14.599&detailLon=120.984&width=100%25&height=380&zoom=5&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1" width="100%" height="380" frameborder="0"></iframe>
+                <iframe id="windy-radar-frame" src="about:blank" width="100%" height="380" frameborder="0"></iframe>
             </div>
         </div>
 
@@ -291,78 +331,594 @@
 
         <div class="map-container"><div id="map"></div></div>
 
-        <button class="btn-my-location btn-ripple" id="btn-my-loc" onclick="getWeather()">📍 Check My Location</button>
         <div class="last-updated"><span id="lbl-last-updated">Last updated:</span> <span id="update-time">--</span><br><br>Jepong Devxyz</div>
     </div>
 </div>
 
-<!-- Modal -->
 <div class="modal-overlay" id="pagasa-modal" onclick="closePagasaModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()">
         <div class="modal-header">
-            <h3>🌐 PAGASA Live Bulletins & Updates</h3>
+            <h3 id="modal-title">🌐 PAGASA Live Bulletins & Updates</h3>
             <button class="close-btn" onclick="closePagasaModal()">&times;</button>
         </div>
         <div class="modal-body">
-            <p style="font-size: 12px; color: #94a3b8;" id="modal-desc">Pumili sa mga opisyal na portal ng PAGASA DOST para sa live weather bulletins:</p>
+            <p style="font-size: 12px; color: #94a3b8;" id="modal-desc">Access official PAGASA DOST portals for live updates:</p>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <a href="https://bagong.pagasa.dost.gov.ph/weather#daily-weather-forecast" target="_blank" rel="noopener" class="link-card">
                     <span style="font-size:20px;">🌐</span>
-                    <div><strong style="display:block; color:#38bdf8; font-size:13px;">PAGASA Daily Weather Forecast</strong><span style="font-size:11px; color:#94a3b8;">Opisyal na ulat ng panahon</span></div>
+                    <div>
+                        <strong style="display:block; color:#38bdf8; font-size:13px;" id="modal-link1-title">PAGASA Daily Weather Forecast</strong>
+                        <span style="font-size:11px; color:#94a3b8;" id="modal-link1-sub">Official weather report</span>
+                    </div>
                 </a>
                 <a href="https://bagong.pagasa.dost.gov.ph/tropical-cyclone/severe-weather-bulletin" target="_blank" rel="noopener" class="link-card">
                     <span style="font-size:20px;">🌀</span>
-                    <div><strong style="display:block; color:#fbbf24; font-size:13px;">Tropical Cyclone Bulletins</strong><span style="font-size:11px; color:#94a3b8;">Mga huling balita at signal ng bagyo</span></div>
+                    <div>
+                        <strong style="display:block; color:#fbbf24; font-size:13px;" id="modal-link2-title">Tropical Cyclone Bulletins</strong>
+                        <span style="font-size:11px; color:#94a3b8;" id="modal-link2-sub">Severe weather advisories</span>
+                    </div>
                 </a>
             </div>
         </div>
     </div>
 </div>
 
+<!-- EXACT OVERLAY SCRIPT LOGIC -->
 <script>
-  // Preloader Logic
   window.addEventListener('load', async function() {
     const preloader = document.getElementById('preloader');
     const statusDot = document.getElementById('statusDot');
     const statusText = document.getElementById('statusText');
+    const rippleSpans = document.querySelectorAll('#rippleLoader span');
+
     const startTime = Date.now();
     let isSiteActive = false;
 
     try {
-      if (window.location.protocol === 'file:') { isSiteActive = true; } 
-      else {
+      if (window.location.protocol === 'file:') {
+        isSiteActive = true;
+      } else {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3500);
-        const response = await fetch(window.location.href, { method: 'GET', cache: 'no-store', signal: controller.signal });
+
+        const response = await fetch(window.location.href, {
+          method: 'GET',
+          cache: 'no-store',
+          signal: controller.signal
+        });
+
         clearTimeout(timeoutId);
-        if (response.ok || response.status < 400) isSiteActive = true;
+
+        if (response.ok || response.status < 400) {
+          isSiteActive = true;
+        }
       }
-    } catch (e) { isSiteActive = false; }
+    } catch (error) {
+      isSiteActive = false;
+    }
 
     const elapsed = Date.now() - startTime;
-    if (elapsed < 1200) await new Promise(r => setTimeout(r, 1200 - elapsed));
+    if (elapsed < 1500) {
+      await new Promise(resolve => setTimeout(resolve, 1500 - elapsed));
+    }
 
     if (isSiteActive) {
       statusDot.className = 'status-dot active';
       statusText.innerText = 'Active / Online';
       statusText.style.color = '#30d158';
-      setTimeout(() => preloader.classList.add('preloader-hidden'), 800);
+
+      const totalElapsed = Date.now() - startTime;
+      const remainingTime = Math.max(0, 5000 - totalElapsed);
+
+      setTimeout(function() {
+        preloader.classList.add('preloader-hidden');
+      }, remainingTime);
+
     } else {
       statusDot.className = 'status-dot down';
-      statusText.innerText = 'Offline';
+      statusText.innerText = 'Down / Offline';
       statusText.style.color = '#ff3b30';
+      
+      rippleSpans.forEach(span => {
+        span.style.borderColor = '#ff3b30';
+      });
     }
   });
 </script>
 
 <script>
 let currentLang = 'en';
-let currentWeatherData = null;
+let map, marker;
+let currentEffect = 'rain';
+let rawWeatherData = null;
+let selectedDayIndex = 0;
+
+const weatherTranslations = {
+    0: { en: "Clear Sky ☀️", tl: "Maliwanag ang Langit ☀️" },
+    1: { en: "Mainly Clear 🌤️", tl: "Bahagyang Maaliwalas 🌤️" },
+    2: { en: "Partly Cloudy ⛅", tl: "Bahagyang Maalapaap ⛅" },
+    3: { en: "Overcast ☁️", tl: "Maimpok / Maalapaap ☁️" },
+    45: { en: "Foggy 🌫️", tl: "Mababa ang Ulap / May Hamog 🌫️" },
+    48: { en: "Depositing Rime Fog 🌫️", tl: "Makapal na Hamog 🌫️" },
+    51: { en: "Light Drizzle 🌧️", tl: "Mahinang Ambon 🌧️" },
+    53: { en: "Moderate Drizzle 🌧️", tl: "Katamtamang Ambon 🌧️" },
+    55: { en: "Dense Drizzle 🌧️", tl: "Malakas na Ambon 🌧️" },
+    61: { en: "Slight Rain 🌧️", tl: "Mahinang Ulan 🌧️" },
+    63: { en: "Moderate Rain 🌧️", tl: "Katamtamang Ulan 🌧️" },
+    65: { en: "Heavy Rain 🌧️", tl: "Malakas na Ulan 🌧️" },
+    80: { en: "Slight Rain Showers 🌦️", tl: "Mahinang Pag-ulan 🌦️" },
+    81: { en: "Moderate Rain Showers 🌧️", tl: "Katamtamang Pag-ulan 🌧️" },
+    82: { en: "Violent Rain Showers ⛈️", tl: "Napakalakas na Ulan ⛈️" },
+    95: { en: "Thunderstorm 🌩️", tl: "May Pagkidlat at Pagkulog 🌩️" },
+    96: { en: "Thunderstorm with Hail ⛈️", tl: "Kidlat na may Kasamang Yelo ⛈️" }
+};
 
 const i18n = {
     en: {
         title: "Weather Forecast", searchPlaceholder: "Search location...", btnSearch: "Search",
-        pagasaBtn: "PAGASA Weather Bulletins & Updates", modalDesc: "Access official PAGASA DOST portals for live updates:",
-        statusFetchingGPS: "Fetching GPS location...", statusSearching: 'Searching for "{query}"...', statusNotFound: "Location not found.",
-        lblHourlyTitle: "Hourly Forecast", lblRainWarning: "PAGASA Rainfall Warning", lblWindSignal: "PAGASA Wind Signal",
-        lblRainChance: "Rain Chanc
+        pagasaBtn: "PAGASA Weather Bulletins & Updates", modalTitle: "🌐 PAGASA Live Bulletins & Updates",
+        modalDesc: "Access official PAGASA DOST portals for live updates:",
+        modalLink1Title: "PAGASA Daily Weather Forecast", modalLink1Sub: "Official weather report",
+        modalLink2Title: "Tropical Cyclone Bulletins", modalLink2Sub: "Severe weather advisories",
+        statusPrompt: 'Click "Check My Location" or search a city to view weather forecast.',
+        statusFetchingGPS: "Fetching exact GPS location...", statusSearching: 'Searching for "{query}"...', statusNotFound: "Location not found.",
+        lblRainWarning: "PAGASA Rainfall Warning", lblWindSignal: "PAGASA Wind Signal",
+        lblRainChance: "Rain Chance Today", lblWindSpeed: "Wind Speed", lblHumidity: "Humidity", lblGPS: "GPS Coords",
+        lblRadarTitle: "🌀 PLAYABLE LIVE SATELLITE & RADAR MAP", lblTmrTitle: "Tomorrow's Forecast",
+        lblTmrProb: "☔ Chance", lblTmrExp: "🌧️ Expected", lblTmrWind: "💨 Wind", lblTmrStatus: "🌀 Status",
+        btnMyLoc: "📍 Check My Location", lblLastUpdated: "Last updated:", feelsLike: "Feels like",
+        todayText: "Today", nowText: "Now", avgWind: "Avg Wind",
+        highRainWarning: "☔ High chance of rain", fairWeatherWarning: "☀️ Fair weather expected",
+        rainyText: "Rainy", fairText: "Fair Weather",
+        days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        daysLong: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        rainStatuses: {
+            red: "Red Warning (Heavy Rain)",
+            orange: "Orange Warning (Moderate)",
+            yellow: "Yellow Warning (Light Rain)",
+            green: "Normal / Clear"
+        },
+        typhoonStatuses: {
+            active: "Signal No. 1 / High Wind",
+            none: "No Active Signal"
+        }
+    },
+    tl: {
+        title: "Ulat ng Panahon", searchPlaceholder: "Magsaliksik ng lugar...", btnSearch: "Hanapin",
+        pagasaBtn: "PAGASA Weather Bulletins & Balita", modalTitle: "🌐 MGA BALITA AT ULAT NG PAGASA",
+        modalDesc: "Pumili sa opisyal na portal ng PAGASA DOST:",
+        modalLink1Title: "Pang-araw-araw na Ulat ng PAGASA", modalLink1Sub: "Opisyal na ulat ng panahon",
+        modalLink2Title: "Ulat sa mga Bagyo", modalLink2Sub: "Balaan sa matinding panahon",
+        statusPrompt: 'Pindutin ang "Gamitin ang Aking Lokasyon" o mag-search para makita ang ulat.',
+        statusFetchingGPS: "Kinukuha ang eksaktong GPS na lokasyon...", statusSearching: 'Hinahanap ang "{query}"...', statusNotFound: "Hindi nahanap ang lugar.",
+        lblRainWarning: "Balaan sa Ulan (PAGASA)", lblWindSignal: "Signal ng Hangin (PAGASA)",
+        lblRainChance: "Tsansa ng Ulan Ngayon", lblWindSpeed: "Bilis ng Hangin", lblHumidity: "Kahalumigmigan", lblGPS: "GPS Coords",
+        lblRadarTitle: "🌀 LIVE SATELLITE AT RADAR MAP", lblTmrTitle: "Ulat sa Kinabukasan",
+        lblTmrProb: "☔ Tsansa", lblTmrExp: "🌧️ Inaasahan", lblTmrWind: "💨 Hangin", lblTmrStatus: "🌀 Katayuan",
+        btnMyLoc: "📍 Gamitin ang Aking Lokasyon", lblLastUpdated: "Huling na-update:", feelsLike: "Ramdam na init",
+        todayText: "Ngayon", nowText: "Ngayon", avgWind: "Karaniwang Hangin",
+        highRainWarning: "☔ Mataas ang tsansa ng ulan", fairWeatherWarning: "☀️ Maganda ang panahon",
+        rainyText: "May Ulan", fairText: "Magandang Panahon",
+        days: ['Linggo', 'Lunes', 'Martes', 'Miyerkules', 'Huwebes', 'Biyernes', 'Sabado'],
+        daysLong: ['Linggo', 'Lunes', 'Martes', 'Miyerkules', 'Huwebes', 'Biyernes', 'Sabado'],
+        months: ['Ene', 'Peb', 'Mar', 'Abr', 'May', 'Hun', 'Hul', 'Ago', 'Sety', 'Okt', 'Nob', 'Dis'],
+        rainStatuses: {
+            red: "Red Warning (Napakalakas na Ulan)",
+            orange: "Orange Warning (Katamtamang Ulan)",
+            yellow: "Yellow Warning (Mahinang Ulan)",
+            green: "Ligtas / Walang Ulan"
+        },
+        typhoonStatuses: {
+            active: "Signal No. 1 / Malakas na Hangin",
+            none: "Walang Nakataas na Signal"
+        }
+    }
+};
+
+function updateClock() {
+    const now = new Date();
+    document.getElementById('live-clock').innerText = now.toLocaleTimeString() + ' | ' + now.toLocaleDateString();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+function setLanguage(lang) {
+    currentLang = lang;
+    document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-lang-tl').classList.toggle('active', lang === 'tl');
+    const t = i18n[lang];
+    
+    document.getElementById('txt-title').innerText = t.title;
+    document.getElementById('city-input').placeholder = t.searchPlaceholder;
+    document.getElementById('txt-btn-search').innerText = t.btnSearch;
+    document.getElementById('lbl-pagasa-btn').innerText = t.pagasaBtn;
+    document.getElementById('modal-title').innerText = t.modalTitle;
+    document.getElementById('modal-desc').innerText = t.modalDesc;
+    document.getElementById('modal-link1-title').innerText = t.modalLink1Title;
+    document.getElementById('modal-link1-sub').innerText = t.modalLink1Sub;
+    document.getElementById('modal-link2-title').innerText = t.modalLink2Title;
+    document.getElementById('modal-link2-sub').innerText = t.modalLink2Sub;
+    
+    document.getElementById('lbl-rain-warning').innerText = t.lblRainWarning;
+    document.getElementById('lbl-wind-signal').innerText = t.lblWindSignal;
+    document.getElementById('lbl-rain-chance').innerText = t.lblRainChance;
+    document.getElementById('lbl-wind-speed').innerText = t.lblWindSpeed;
+    document.getElementById('lbl-humidity').innerText = t.lblHumidity;
+    document.getElementById('lbl-gps').innerText = t.lblGPS;
+    document.getElementById('lbl-radar-title').innerText = t.lblRadarTitle;
+    document.getElementById('lbl-tmr-title').innerText = t.lblTmrTitle;
+    document.getElementById('lbl-tmr-prob').innerText = t.lblTmrProb;
+    document.getElementById('lbl-tmr-exp').innerText = t.lblTmrExp;
+    document.getElementById('lbl-tmr-wind').innerText = t.lblTmrWind;
+    document.getElementById('lbl-tmr-status').innerText = t.lblTmrStatus;
+    document.getElementById('btn-my-loc').innerText = t.btnMyLoc;
+    document.getElementById('lbl-last-updated').innerText = t.lblLastUpdated;
+
+    if (document.getElementById('weather-data').style.display === 'none') {
+        document.getElementById('status').innerText = t.statusPrompt;
+    } else if (rawWeatherData) {
+        renderDaysRow();
+        renderSelectedDayUI(selectedDayIndex);
+        updateTomorrowUI();
+    }
+}
+
+function initMap(lat, lon) {
+    if (!map) {
+        map = L.map('map').setView([lat, lon], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        marker = L.marker([lat, lon]).addTo(map);
+    } else {
+        map.setView([lat, lon], 12);
+        marker.setLatLng([lat, lon]);
+    }
+    setTimeout(() => { map.invalidateSize(); }, 300);
+}
+
+function getWeatherByCoords(lat, lon, placeName = null) {
+    document.getElementById('status').innerText = "Loading weather data...";
+    document.getElementById('weather-data').style.display = 'flex';
+    document.getElementById('location-name').style.display = 'block';
+
+    initMap(lat, lon);
+    
+    document.getElementById('windy-radar-frame').src = `https://embed.windy.com/embed2.html?lat=${lat}&lon=${lon}&detailLat=${lat}&detailLon=${lon}&width=100%25&height=380&zoom=8&level=surface&overlay=wind&product=ecmwf&metricWind=default&metricTemp=default&radarRange=-1`;
+
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation&hourly=temperature_2m,weather_code,precipitation_probability,precipitation,relative_humidity_2m,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max&timezone=auto`;
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            rawWeatherData = data;
+            selectedDayIndex = 0;
+            document.getElementById('status').innerText = "";
+
+            if (placeName) {
+                document.getElementById('location-name').innerText = placeName;
+            } else {
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                    .then(r => r.json())
+                    .then(geo => {
+                        const city = geo.address.city || geo.address.town || geo.address.village || geo.address.suburb || geo.address.county || "Current Location";
+                        document.getElementById('location-name').innerText = city;
+                    }).catch(() => {
+                        document.getElementById('location-name').innerText = `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+                    });
+            }
+
+            document.getElementById('coords').innerText = `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+
+            renderDaysRow();
+            renderSelectedDayUI(0);
+            updateTomorrowUI();
+
+            document.getElementById('update-time').innerText = new Date().toLocaleTimeString();
+        })
+        .catch(() => {
+            document.getElementById('status').innerText = "Error fetching weather data.";
+        });
+}
+
+function updateTomorrowUI() {
+    if (!rawWeatherData) return;
+    const t = i18n[currentLang];
+    const data = rawWeatherData;
+    const tmrCode = data.daily.weather_code[1];
+    const tmrInfo = decodeWeatherCode(tmrCode);
+    
+    document.getElementById('tmr-condition').innerText = tmrInfo.desc;
+    document.getElementById('tmr-warning').innerText = data.daily.precipitation_probability_max[1] > 60 ? t.highRainWarning : t.fairWeatherWarning;
+    document.getElementById('tmr-temp').innerText = `${Math.round(data.daily.temperature_2m_max[1])}° / ${Math.round(data.daily.temperature_2m_min[1])}°`;
+    document.getElementById('tmr-rain-prob').innerText = `${data.daily.precipitation_probability_max[1]}%`;
+    document.getElementById('tmr-rain-sum').innerText = `${data.daily.precipitation_sum[1]} mm`;
+    document.getElementById('tmr-wind').innerText = `${data.daily.wind_speed_10m_max[1]} km/h`;
+    document.getElementById('tmr-status').innerText = data.daily.precipitation_probability_max[1] > 60 ? t.rainyText : t.fairText;
+}
+
+function renderDaysRow() {
+    const container = document.getElementById('days-scroll-container');
+    container.innerHTML = '';
+    const daily = rawWeatherData.daily;
+    const t = i18n[currentLang];
+
+    for (let i = 0; i < 7; i++) {
+        const dateObj = new Date();
+        dateObj.setDate(dateObj.getDate() + i);
+        const dayName = (i === 0) ? t.todayText : t.days[dateObj.getDay()];
+        const maxTemp = Math.round(daily.temperature_2m_max[i]);
+        const minTemp = Math.round(daily.temperature_2m_min[i]);
+        const code = daily.weather_code[i];
+
+        const card = document.createElement('div');
+        card.className = `day-card ${i === selectedDayIndex ? 'active' : ''}`;
+        card.onclick = () => selectDay(i);
+        card.innerHTML = `
+            <span class="day-name">${dayName}</span>
+            <span class="day-icon">${decodeWeatherCode(code).icon}</span>
+            <span class="day-temp">${maxTemp}°/${minTemp}°</span>
+        `;
+        container.appendChild(card);
+    }
+}
+
+function selectDay(index) {
+    selectedDayIndex = index;
+    renderDaysRow();
+    renderSelectedDayUI(index);
+}
+
+function renderSelectedDayUI(dayIndex) {
+    const data = rawWeatherData;
+    const isToday = (dayIndex === 0);
+    const t = i18n[currentLang];
+
+    const dateObj = new Date();
+    dateObj.setDate(dateObj.getDate() + dayIndex);
+    const dayNameLong = t.daysLong[dateObj.getDay()];
+    const monthName = t.months[dateObj.getMonth()];
+    const dateFormatted = `${dayNameLong}, ${monthName} ${dateObj.getDate()}`;
+    
+    document.getElementById('selected-date-lbl').innerText = isToday ? `${t.nowText} (${dateFormatted})` : dateFormatted;
+
+    if (isToday) {
+        document.getElementById('temperature').innerText = `${Math.round(data.current.temperature_2m)}°`;
+        document.getElementById('feels-like').innerText = `${t.feelsLike} ${Math.round(data.current.apparent_temperature)}°`;
+        document.getElementById('humidity').innerText = `${data.current.relative_humidity_2m}%`;
+        document.getElementById('windspeed').innerText = `${data.current.wind_speed_10m} km/h`;
+        const codeInfo = decodeWeatherCode(data.current.weather_code);
+        document.getElementById('weather-code').innerHTML = `${codeInfo.desc}`;
+        currentEffect = codeInfo.effect;
+    } else {
+        const maxT = Math.round(data.daily.temperature_2m_max[dayIndex]);
+        const minT = Math.round(data.daily.temperature_2m_min[dayIndex]);
+        document.getElementById('temperature').innerText = `${maxT}°/${minT}°`;
+        document.getElementById('feels-like').innerText = `${t.avgWind}: ${data.daily.wind_speed_10m_max[dayIndex]} km/h`;
+        document.getElementById('humidity').innerText = `--%`;
+        document.getElementById('windspeed').innerText = `${data.daily.wind_speed_10m_max[dayIndex]} km/h`;
+        const codeInfo = decodeWeatherCode(data.daily.weather_code[dayIndex]);
+        document.getElementById('weather-code').innerHTML = `${codeInfo.desc}`;
+        currentEffect = codeInfo.effect;
+    }
+
+    const track = document.getElementById('hourly-track');
+    track.innerHTML = '';
+    const startHourIdx = dayIndex * 24;
+    const points = [];
+
+    for (let i = 0; i < 24; i++) {
+        const targetIdx = startHourIdx + i;
+        if (!data.hourly.time[targetIdx]) break;
+
+        const rawTime = new Date(data.hourly.time[targetIdx]);
+        const timeLabel = (isToday && i === 0) ? t.nowText : rawTime.toLocaleTimeString([], { hour: 'numeric', hour12: true });
+        const temp = Math.round(data.hourly.temperature_2m[targetIdx]);
+        const code = data.hourly.weather_code[targetIdx];
+        const rainProb = data.hourly.precipitation_probability[targetIdx] || 0;
+
+        points.push(temp);
+
+        const item = document.createElement('div');
+        item.className = 'hourly-item';
+        item.innerHTML = `
+            <span class="h-temp">${temp}°</span>
+            <span class="h-icon">${decodeWeatherCode(code).icon}</span>
+            <span class="h-rain">${rainProb > 0 ? rainProb + '%' : ''}</span>
+            <span class="h-time">${timeLabel}</span>
+        `;
+        track.appendChild(item);
+    }
+
+    drawHourlyCurve(points);
+
+    const rainProb = data.daily.precipitation_probability_max[dayIndex] || 0;
+    document.getElementById('rain-prob').innerText = `${rainProb}%`;
+
+    const rainBox = document.getElementById('rain-box');
+    if (rainProb > 85) {
+        document.getElementById('rain-status').innerText = t.rainStatuses.red;
+        rainBox.className = "info-box status-red";
+    } else if (rainProb > 60) {
+        document.getElementById('rain-status').innerText = t.rainStatuses.orange;
+        rainBox.className = "info-box status-orange";
+    } else if (rainProb > 30) {
+        document.getElementById('rain-status').innerText = t.rainStatuses.yellow;
+        rainBox.className = "info-box status-yellow";
+    } else {
+        document.getElementById('rain-status').innerText = t.rainStatuses.green;
+        rainBox.className = "info-box status-green";
+    }
+
+    const typhoonBox = document.getElementById('typhoon-box');
+    const maxWind = data.daily.wind_speed_10m_max[dayIndex] || 0;
+    if (maxWind > 60) {
+        document.getElementById('typhoon-status').innerText = t.typhoonStatuses.active;
+        typhoonBox.className = "info-box status-red";
+    } else {
+        document.getElementById('typhoon-status').innerText = t.typhoonStatuses.none;
+        typhoonBox.className = "info-box status-green";
+    }
+}
+
+function drawHourlyCurve(temps) {
+    const svg = document.getElementById('hourly-curve');
+    if (!temps.length) return;
+
+    const width = temps.length * 65;
+    svg.setAttribute('width', width);
+    svg.setAttribute('viewBox', `0 0 ${width} 35`);
+
+    const max = Math.max(...temps);
+    const min = Math.min(...temps);
+    const range = (max - min) || 1;
+
+    let pathD = "";
+    temps.forEach((t, i) => {
+        const x = i * 65 + 32.5;
+        const y = 30 - ((t - min) / range) * 20;
+        pathD += (i === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`);
+    });
+
+    svg.innerHTML = `<path d="${pathD}" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round"/>`;
+}
+
+function getWeather() {
+    if (navigator.geolocation) {
+        document.getElementById('status').innerText = i18n[currentLang].statusFetchingGPS;
+        navigator.geolocation.getCurrentPosition(
+            pos => getWeatherByCoords(pos.coords.latitude, pos.coords.longitude),
+            err => {
+                console.warn('GPS Error, fallback to default:', err);
+                getWeatherByCoords(15.5631, 120.7681, "Guimba, Nueva Ecija");
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+    } else {
+        getWeatherByCoords(15.5631, 120.7681, "Guimba, Nueva Ecija");
+    }
+}
+
+function searchLocation() {
+    const query = document.getElementById('city-input').value.trim();
+    if (!query) return;
+
+    document.getElementById('status').innerText = i18n[currentLang].statusSearching.replace("{query}", query);
+
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
+        .then(r => r.json())
+        .then(results => {
+            if (results && results.length > 0) {
+                const item = results[0];
+                getWeatherByCoords(parseFloat(item.lat), parseFloat(item.lon), item.display_name.split(',')[0]);
+            } else {
+                document.getElementById('status').innerText = i18n[currentLang].statusNotFound;
+            }
+        });
+}
+
+function decodeWeatherCode(code) {
+    const info = weatherTranslations[code] || { en: "Cloudy ☁️", tl: "Maalapaap ☁️" };
+    const desc = info[currentLang] || info.en;
+    
+    let effect = "clear";
+    let icon = "☁️";
+    
+    if (code === 0 || code === 1) { effect = "clear"; icon = "☀️"; }
+    else if (code === 2) { effect = "clear"; icon = "⛅"; }
+    else if (code >= 51 && code <= 82) { effect = "rain"; icon = "🌧️"; }
+    else if (code >= 95) { effect = "lightning"; icon = "🌩️"; }
+
+    return { desc, icon, effect };
+}
+
+function openPagasaModal() { document.getElementById('pagasa-modal').classList.add('active'); }
+function closePagasaModal() { document.getElementById('pagasa-modal').classList.remove('active'); }
+
+/* CANVAS WITH ZIGZAG LIGHTNING */
+const canvas = document.getElementById('weather-canvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+let raindrops = Array.from({ length: 150 }, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    length: Math.random() * 20 + 10,
+    speed: Math.random() * 10 + 10
+}));
+
+let flashOpacity = 0;
+let activeLightningPath = [];
+
+function generateLightningPath() {
+    const path = [];
+    let startX = Math.random() * canvas.width;
+    let startY = 0;
+    path.push({ x: startX, y: startY });
+
+    while (startY < canvas.height * 0.7) {
+        startX += (Math.random() - 0.5) * 50;
+        startY += Math.random() * 40 + 10;
+        path.push({ x: startX, y: startY });
+    }
+    return path;
+}
+
+function drawEffects() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (currentEffect === 'rain' || currentEffect === 'lightning') {
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        for (let drop of raindrops) {
+            ctx.moveTo(drop.x, drop.y);
+            ctx.lineTo(drop.x - 1, drop.y + drop.length);
+            drop.y += drop.speed;
+            if (drop.y > canvas.height) {
+                drop.y = -drop.length;
+                drop.x = Math.random() * canvas.width;
+            }
+        }
+        ctx.stroke();
+    }
+
+    if (currentEffect === 'lightning') {
+        if (Math.random() < 0.015 && flashOpacity <= 0) {
+            flashOpacity = 0.8;
+            activeLightningPath = generateLightningPath();
+        }
+
+        if (flashOpacity > 0) {
+            ctx.fillStyle = `rgba(255, 255, 255, ${flashOpacity * 0.4})`;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (activeLightningPath.length > 1) {
+                ctx.beginPath();
+                ctx.moveTo(activeLightningPath[0].x, activeLightningPath[0].y);
+                for (let i = 1; i < activeLightningPath.length; i++) {
+                    ctx.lineTo(activeLightningPath[i].x, activeLightningPath[i].y);
+                }
+                ctx.strokeStyle = `rgba(224, 242, 254, ${flashOpacity})`;
+                ctx.lineWidth = 3;
+                ctx.shadowColor = '#38bdf8';
+                ctx.shadowBlur = 15;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+            }
+
+            flashOpacity -= 0.06;
+        }
+    }
+
+    requestAnimationFrame(drawEffects);
+}
+drawEffects();
+</script>
+</body>
+</html>
