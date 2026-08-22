@@ -25,475 +25,201 @@
         /* ==================== PRELOADER STYLES ==================== */
         #preloader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
             background-color: #0d0d0d;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
             z-index: 999999;
             transition: opacity 0.6s ease, visibility 0.6s ease;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        .ripple-loader {
-            position: relative;
-            width: 64px;
-            height: 64px;
-            margin-bottom: 20px;
-        }
-
+        .ripple-loader { position: relative; width: 64px; height: 64px; margin-bottom: 20px; }
         .ripple-loader span {
-            position: absolute;
-            border: 4px solid #60a5fa;
-            opacity: 1;
-            border-radius: 50%;
-            animation: ripple 1.8s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-            transition: border-color 0.3s ease;
+            position: absolute; border: 4px solid #60a5fa; opacity: 1; border-radius: 50%;
+            animation: ripple 1.8s cubic-bezier(0, 0.2, 0.8, 1) infinite; transition: border-color 0.3s ease;
         }
-
-        .ripple-loader span:nth-child(2) {
-            animation-delay: -0.9s;
-        }
+        .ripple-loader span:nth-child(2) { animation-delay: -0.9s; }
 
         @keyframes ripple {
-            0% {
-                top: 32px;
-                left: 32px;
-                width: 0;
-                height: 0;
-                opacity: 0;
-            }
-            4.9% {
-                top: 32px;
-                left: 32px;
-                width: 0;
-                height: 0;
-                opacity: 0;
-            }
-            5% {
-                top: 32px;
-                left: 32px;
-                width: 0;
-                height: 0;
-                opacity: 1;
-            }
-            100% {
-                top: 0px;
-                left: 0px;
-                width: 64px;
-                height: 64px;
-                opacity: 0;
-            }
+            0% { top: 32px; left: 32px; width: 0; height: 0; opacity: 0; }
+            5% { top: 32px; left: 32px; width: 0; height: 0; opacity: 1; }
+            100% { top: 0px; left: 0px; width: 64px; height: 64px; opacity: 0; }
         }
 
         .brand-title {
-            color: #ffffff;
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin: 0;
-            text-transform: uppercase;
-            background: linear-gradient(45deg, #ff5722, #38b6ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff; font-size: 1.8rem; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; background: linear-gradient(45deg, #ff5722, #38b6ff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
         .status-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 14px;
-            padding: 6px 14px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: #cccccc;
-            letter-spacing: 0.5px;
+            display: flex; align-items: center; gap: 8px; margin-top: 14px; padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.05); border-radius: 20px; font-size: 0.85rem; color: #cccccc;
         }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; background-color: #ff9f0a; transition: all 0.3s ease; }
+        .status-dot.active { background-color: #30d158; box-shadow: 0 0 10px #30d158; }
+        .status-dot.down { background-color: #ff3b30; box-shadow: 0 0 10px #ff3b30; }
 
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #ff9f0a;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .status-dot.active {
-            background-color: #30d158;
-            box-shadow: 0 0 10px #30d158;
-        }
-
-        .status-dot.down {
-            background-color: #ff3b30;
-            box-shadow: 0 0 10px #ff3b30;
-        }
-
-        #preloader.preloader-hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
+        #preloader.preloader-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         /* ==================== PRELOADER END ==================== */
 
         #weather-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
         }
 
         .dashboard-container {
-            width: 100%;
-            max-width: 720px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
+            width: 100%; max-width: 720px; display: flex; flex-direction: column;
+            gap: 14px; margin: 0 auto; position: relative; z-index: 1;
         }
 
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
+        .top-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .lang-switch {
-            display: flex;
-            background: rgba(30, 41, 59, 0.85);
-            border: 1px solid #334155;
-            border-radius: 20px;
-            padding: 2px;
-            backdrop-filter: blur(8px);
+            display: flex; background: rgba(30, 41, 59, 0.85);
+            border: 1px solid #334155; border-radius: 20px; padding: 2px; backdrop-filter: blur(8px);
         }
-
         .lang-btn {
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            padding: 4px 10px;
-            font-size: 11px;
-            font-weight: 600;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background: transparent; border: none; color: #94a3b8; padding: 4px 10px;
+            font-size: 11px; font-weight: 600; border-radius: 16px; cursor: pointer; transition: all 0.3s ease;
         }
-
-        .lang-btn.active {
-            background: #2563eb;
-            color: #ffffff;
-        }
+        .lang-btn.active { background: #2563eb; color: #ffffff; }
 
         .header { text-align: center; flex: 1; }
-        .header h2 { font-size: 20px; font-weight: 600; color: #f8fafc; letter-spacing: -0.5px; }
-        .clock {
-            font-size: 12px;
-            color: #94a3b8;
-            margin-top: 4px;
-            margin-bottom: 8px;
-        }
+        .header h2 { font-size: 20px; font-weight: 600; color: #f8fafc; }
+        .clock { font-size: 12px; color: #94a3b8; margin: 4px 0 8px; text-align: center; }
 
         .search-box { display: flex; gap: 8px; width: 100%; }
         .search-input {
-            flex: 1;
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            background: rgba(30, 41, 59, 0.85);
-            backdrop-filter: blur(8px);
-            color: #fff;
-            font-size: 13px;
-            outline: none;
-            min-width: 0;
+            flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid #334155;
+            background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(8px); color: #fff; font-size: 13px; outline: none;
         }
 
-        .btn-ripple {
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            outline: none;
-            user-select: none;
-            transition: background 0.2s ease, transform 0.1s ease;
-        }
+        .btn-ripple { position: relative; overflow: hidden; cursor: pointer; outline: none; transition: transform 0.1s ease; }
         .btn-ripple:active { transform: scale(0.98); }
 
-        .water-ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.6) 0%, rgba(255, 255, 255, 0.3) 40%, rgba(56, 189, 248, 0) 70%);
-            transform: scale(0);
-            pointer-events: none;
-            animation: water-wave 0.75s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-        }
-
-        @keyframes water-wave {
-            0% { transform: scale(0); opacity: 1; }
-            80% { opacity: 0.5; }
-            100% { transform: scale(3.5); opacity: 0; }
-        }
-
-        .btn-search {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 13px;
-            white-space: nowrap;
-        }
-
+        .btn-search { background: #2563eb; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 500; font-size: 13px; }
         .btn-pagasa-news {
-            width: 100%;
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-            color: #ffffff;
-            border: 1px solid #38bdf8;
-            padding: 10px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+            width: 100%; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff;
+            border: 1px solid #38bdf8; padding: 10px; border-radius: 10px; font-weight: 600; font-size: 13px;
+            display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
         }
 
         .location-name { font-size: 18px; font-weight: 600; color: #38bdf8; text-align: center; }
         .status-msg { font-size: 13px; color: #fbbf24; text-align: center; }
 
         .main-weather {
-            text-align: center;
-            padding: 20px 16px;
-            background: rgba(30, 41, 59, 0.75);
-            backdrop-filter: blur(12px);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center; padding: 20px 16px; background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(12px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .temp { font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -1px; margin-bottom: 6px; }
+        .temp { font-size: 56px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
         .condition-badge { display: inline-block; color: #38bdf8; font-size: 15px; font-weight: 500; }
 
         .hourly-container {
-            background: rgba(30, 41, 59, 0.75);
-            backdrop-filter: blur(12px);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px;
+            background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px);
+            border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px;
         }
         .hourly-title { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #38bdf8; margin-bottom: 10px; }
-        .hourly-scroll {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding-bottom: 6px;
-        }
+        .hourly-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; }
         .hourly-scroll::-webkit-scrollbar { height: 4px; }
         .hourly-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         .hourly-item {
-            flex: 0 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            min-width: 60px;
-            padding: 8px 6px;
-            border-radius: 8px;
-            background: rgba(15, 23, 42, 0.5);
-            font-size: 12px;
+            flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 4px;
+            min-width: 60px; padding: 8px 6px; border-radius: 8px; background: rgba(15, 23, 42, 0.5); font-size: 12px;
         }
 
         .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         @media (min-width: 500px) { .info-grid { grid-template-columns: repeat(3, 1fr); } }
 
         .info-box {
-            background: rgba(30, 41, 59, 0.75);
-            backdrop-filter: blur(12px);
-            padding: 12px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px); padding: 12px;
+            border-radius: 12px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; flex-direction: column; justify-content: center;
         }
+        .info-box.status-green { border-color: #22c55e !important; } .info-box.status-green .value { color: #4ade80 !important; }
+        .info-box.status-yellow { border-color: #eab308 !important; } .info-box.status-yellow .value { color: #fde047 !important; }
+        .info-box.status-orange { border-color: #f97316 !important; } .info-box.status-orange .value { color: #fb923c !important; }
+        .info-box.status-red { border-color: #ef4444 !important; } .info-box.status-red .value { color: #f87171 !important; }
+        .info-box.status-purple { border-color: #a855f7 !important; } .info-box.status-purple .value { color: #c084fc !important; }
 
-        .info-box.status-green { border-color: #22c55e !important; }
-        .info-box.status-green .value { color: #4ade80 !important; }
-        .info-box.status-yellow { border-color: #eab308 !important; }
-        .info-box.status-yellow .value { color: #fde047 !important; }
-        .info-box.status-orange { border-color: #f97316 !important; }
-        .info-box.status-orange .value { color: #fb923c !important; }
-        .info-box.status-red { border-color: #ef4444 !important; }
-        .info-box.status-red .value { color: #f87171 !important; }
-        .info-box.status-purple { border-color: #a855f7 !important; }
-        .info-box.status-purple .value { color: #c084fc !important; }
+        .info-box .label { font-size: 10px; text-transform: uppercase; color: #94a3b8; margin-bottom: 2px; }
+        .info-box .value { font-size: 12px; font-weight: 600; color: #f8fafc; }
 
-        .info-box .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 2px; }
-        .info-box .value { font-size: 12px; font-weight: 600; color: #f8fafc; word-break: break-word; }
-
-        .tomorrow-box {
-            padding: 14px;
-            background: rgba(30, 41, 59, 0.75);
-            backdrop-filter: blur(12px);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .tomorrow-box, .radar-box {
+            padding: 14px; background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px);
+            border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .tomorrow-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #38bdf8; margin-bottom: 10px; }
-        .tomorrow-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 12px;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #334155;
-        }
+        .tomorrow-title { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #38bdf8; margin-bottom: 10px; }
+        .tomorrow-header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #334155; }
 
         .tmr-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
         @media (min-width: 500px) { .tmr-grid { grid-template-columns: repeat(4, 1fr); } }
+        .tmr-item { background: rgba(15, 23, 42, 0.8); padding: 8px; border-radius: 8px; display: flex; flex-direction: column; gap: 2px; text-align: center; border: 1px solid #1e293b; }
+        .tmr-item span { font-size: 10px; color: #94a3b8; } .tmr-item b { font-size: 12px; font-weight: 600; color: #f8fafc; }
 
-        .tmr-item {
-            background: rgba(15, 23, 42, 0.8);
-            padding: 8px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            text-align: center;
-            border: 1px solid #1e293b;
-        }
-
-        .tmr-item span { font-size: 10px; color: #94a3b8; }
-        .tmr-item b { font-size: 12px; font-weight: 600; color: #f8fafc; word-break: break-word; }
-
-        .radar-box {
-            padding: 14px;
-            background: rgba(30, 41, 59, 0.75);
-            backdrop-filter: blur(12px);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .radar-iframe-container {
-            width: 100%;
-            height: 380px;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #334155;
-            margin-top: 8px;
-        }
-
-        .map-container {
-            border-radius: 12px;
-            overflow: hidden;
-            height: 200px;
-            width: 100%;
-            border: 1px solid #334155;
-        }
+        .radar-iframe-container { width: 100%; height: 380px; border-radius: 10px; overflow: hidden; border: 1px solid #334155; margin-top: 8px; }
+        .map-container { border-radius: 12px; overflow: hidden; height: 200px; width: 100%; border: 1px solid #334155; }
         #map { width: 100%; height: 100%; }
 
         .btn-my-location {
-            width: 100%;
-            background: rgba(30, 41, 59, 0.85);
-            backdrop-filter: blur(8px);
-            color: #f8fafc;
-            border: 1px solid #334155;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 500;
-            font-size: 13px;
+            width: 100%; background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(8px);
+            color: #f8fafc; border: 1px solid #334155; padding: 12px; border-radius: 10px; font-weight: 500; font-size: 13px;
         }
-
         .last-updated { font-size: 11px; color: #64748b; text-align: center; margin-top: 6px; }
 
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            display: flex; align-items: center; justify-content: center;
-            padding: 16px; opacity: 0; pointer-events: none;
-            transition: opacity 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); z-index: 1000;
+            display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
-
         .modal-card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 16px;
-            width: 100%; max-width: 500px;
-            display: flex; flex-direction: column;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-            overflow: hidden; transform: translateY(20px); transition: transform 0.3s ease;
+            background: #1e293b; border: 1px solid #334155; border-radius: 16px; width: 100%; max-width: 500px;
+            display: flex; flex-direction: column; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); overflow: hidden;
         }
-        .modal-overlay.active .modal-card { transform: translateY(0); }
-
-        .modal-header {
-            padding: 14px 16px; border-bottom: 1px solid #334155;
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(15, 23, 42, 0.6);
-        }
+        .modal-header { padding: 14px 16px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.6); }
         .modal-header h3 { font-size: 15px; color: #38bdf8; display: flex; align-items: center; gap: 6px; }
         .close-btn { background: transparent; border: none; color: #94a3b8; font-size: 22px; cursor: pointer; }
-        .close-btn:hover { color: #fff; }
         .modal-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 
         .link-card {
-            background: rgba(15, 23, 42, 0.6); border: 1px solid #334155;
-            padding: 12px; border-radius: 10px; text-decoration: none; color: #f8fafc;
-            display: flex; align-items: center; gap: 12px; transition: border-color 0.2s, background 0.2s;
+            background: rgba(15, 23, 42, 0.6); border: 1px solid #334155; padding: 12px; border-radius: 10px;
+            text-decoration: none; color: #f8fafc; display: flex; align-items: center; gap: 12px; transition: border-color 0.2s, background 0.2s;
         }
         .link-card:hover { border-color: #38bdf8; background: rgba(30, 41, 59, 0.8); }
     </style>
 </head>
 <body>
 
-<!-- ==================== PRELOADER HTML ==================== -->
+<!-- PRELOADER -->
 <div id="preloader">
-  <div class="ripple-loader" id="rippleLoader">
-    <span></span>
-    <span></span>
-  </div>
+  <div class="ripple-loader" id="rippleLoader"><span></span><span></span></div>
   <h1 class="brand-title">Jepong Devxyz</h1>
-  
   <div class="status-badge">
     <span class="status-dot" id="statusDot"></span>
     <span id="statusText" style="color: #ff9f0a;">Checking site status...</span>
   </div>
 </div>
-<!-- ==================== PRELOADER END ==================== -->
 
 <canvas id="weather-canvas"></canvas>
 
 <div class="dashboard-container">
     <div class="top-bar">
         <div style="width: 70px;"></div>
-        <div class="header">
-            <h2 id="txt-title">Weather Forecast</h2>
-        </div>
+        <div class="header"><h2 id="txt-title">Weather Forecast</h2></div>
         <div class="lang-switch">
             <button class="lang-btn active" id="btn-lang-en" onclick="setLanguage('en')">EN</button>
             <button class="lang-btn" id="btn-lang-tl" onclick="setLanguage('tl')">TL</button>
         </div>
     </div>
-    <div class="clock" id="live-clock" style="text-align:center;">--:--:-- --</div>
+    <div class="clock" id="live-clock">--:--:-- --</div>
 
     <div class="search-box">
         <input type="text" id="city-input" class="search-input" placeholder="Search location..." onkeydown="if(event.key==='Enter') searchLocation()">
         <button class="btn-search btn-ripple" id="txt-btn-search" onclick="searchLocation()">Search</button>
     </div>
 
-    <!-- PAGASA Bulletin Pop-up Button -->
     <button class="btn-pagasa-news btn-ripple" id="btn-pagasa-pop" onclick="openPagasaModal()">
         <span>📢</span> <span id="lbl-pagasa-btn">PAGASA Weather Bulletins & Updates</span>
     </button>
@@ -539,23 +265,15 @@
             </div>
         </div>
 
-        <!-- PLAYABLE SATELLITE & RADAR MAP (WINDY STYLE) -->
         <div class="radar-box">
             <div class="tomorrow-title" id="lbl-radar-title">🌀 PLAYABLE LIVE SATELLITE & RADAR MAP</div>
             <div class="radar-iframe-container">
-                <iframe 
-                    id="windy-radar-frame"
-                    src="https://embed.windy.com/embed2.html?lat=13.0&lon=122.0&detailLat=14.599&detailLon=120.984&width=100%25&height=380&zoom=5&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1" 
-                    width="100%" 
-                    height="380" 
-                    frameborder="0">
-                </iframe>
+                <iframe id="windy-radar-frame" src="https://embed.windy.com/embed2.html?lat=13.0&lon=122.0&detailLat=14.599&detailLon=120.984&width=100%25&height=380&zoom=5&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1" width="100%" height="380" frameborder="0"></iframe>
             </div>
         </div>
 
         <div class="tomorrow-box">
             <div class="tomorrow-title" id="lbl-tmr-title">Tomorrow's Forecast</div>
-            
             <div class="tomorrow-header">
                 <div>
                     <div style="font-size:14px; font-weight:600;" id="tmr-condition">--</div>
@@ -563,37 +281,22 @@
                 </div>
                 <div style="font-size:18px; font-weight:700; color:#38bdf8;" id="tmr-temp">--° / --°</div>
             </div>
-
             <div class="tmr-grid">
-                <div class="tmr-item">
-                    <span id="lbl-tmr-prob">☔ Chance</span>
-                    <b id="tmr-rain-prob">--%</b>
-                </div>
-                <div class="tmr-item">
-                    <span id="lbl-tmr-exp">🌧️ Expected</span>
-                    <b id="tmr-rain-sum">-- mm</b>
-                </div>
-                <div class="tmr-item">
-                    <span id="lbl-tmr-wind">💨 Wind</span>
-                    <b id="tmr-wind">-- km/h</b>
-                </div>
-                <div class="tmr-item">
-                    <span id="lbl-tmr-status">🌀 Status</span>
-                    <b id="tmr-status">--</b>
-                </div>
+                <div class="tmr-item"><span id="lbl-tmr-prob">☔ Chance</span><b id="tmr-rain-prob">--%</b></div>
+                <div class="tmr-item"><span id="lbl-tmr-exp">🌧️ Expected</span><b id="tmr-rain-sum">-- mm</b></div>
+                <div class="tmr-item"><span id="lbl-tmr-wind">💨 Wind</span><b id="tmr-wind">-- km/h</b></div>
+                <div class="tmr-item"><span id="lbl-tmr-status">🌀 Status</span><b id="tmr-status">--</b></div>
             </div>
         </div>
 
-        <div class="map-container">
-            <div id="map"></div>
-        </div>
+        <div class="map-container"><div id="map"></div></div>
 
         <button class="btn-my-location btn-ripple" id="btn-my-loc" onclick="getWeather()">📍 Check My Location</button>
         <div class="last-updated"><span id="lbl-last-updated">Last updated:</span> <span id="update-time">--</span><br><br>Jepong Devxyz</div>
     </div>
 </div>
 
-<!-- PAGASA News Modal -->
+<!-- Modal -->
 <div class="modal-overlay" id="pagasa-modal" onclick="closePagasaModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()">
         <div class="modal-header">
@@ -601,539 +304,65 @@
             <button class="close-btn" onclick="closePagasaModal()">&times;</button>
         </div>
         <div class="modal-body">
-            <p style="font-size: 12px; color: #94a3b8;" id="modal-desc">
-                Pumili sa mga opisyal na portal ng PAGASA DOST para sa live weather bulletins, thunderstorm advisories, at tropical cyclone tracking:
-            </p>
+            <p style="font-size: 12px; color: #94a3b8;" id="modal-desc">Pumili sa mga opisyal na portal ng PAGASA DOST para sa live weather bulletins:</p>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <a href="https://bagong.pagasa.dost.gov.ph/weather#daily-weather-forecast" target="_blank" rel="noopener" class="link-card">
                     <span style="font-size:20px;">🌐</span>
-                    <div>
-                        <strong style="display:block; color:#38bdf8; font-size:13px;">PAGASA Daily Weather Forecast</strong>
-                        <span style="font-size:11px; color:#94a3b8;">Opisyal na ulat ng panahon sa buong Pilipinas</span>
-                    </div>
+                    <div><strong style="display:block; color:#38bdf8; font-size:13px;">PAGASA Daily Weather Forecast</strong><span style="font-size:11px; color:#94a3b8;">Opisyal na ulat ng panahon</span></div>
                 </a>
                 <a href="https://bagong.pagasa.dost.gov.ph/tropical-cyclone/severe-weather-bulletin" target="_blank" rel="noopener" class="link-card">
                     <span style="font-size:20px;">🌀</span>
-                    <div>
-                        <strong style="display:block; color:#fbbf24; font-size:13px;">Tropical Cyclone Bulletins</strong>
-                        <span style="font-size:11px; color:#94a3b8;">Mga huling balita at signal ng bagyo</span>
-                    </div>
-                </a>
-                <a href="https://www.facebook.com/PAGASA.DOST.GOV.PH" target="_blank" rel="noopener" class="link-card">
-                    <span style="font-size:20px;">📘</span>
-                    <div>
-                        <strong style="display:block; color:#60a5fa; font-size:13px;">PAGASA Facebook Page</strong>
-                        <span style="font-size:11px; color:#94a3b8;">Real-time thunderstorm advisories at hourly updates</span>
-                    </div>
+                    <div><strong style="display:block; color:#fbbf24; font-size:13px;">Tropical Cyclone Bulletins</strong><span style="font-size:11px; color:#94a3b8;">Mga huling balita at signal ng bagyo</span></div>
                 </a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ==================== PRELOADER SCRIPT ==================== -->
 <script>
+  // Preloader Logic
   window.addEventListener('load', async function() {
     const preloader = document.getElementById('preloader');
     const statusDot = document.getElementById('statusDot');
     const statusText = document.getElementById('statusText');
-    const rippleSpans = document.querySelectorAll('#rippleLoader span');
-
     const startTime = Date.now();
     let isSiteActive = false;
 
     try {
-      if (window.location.protocol === 'file:') {
-        isSiteActive = true;
-      } else {
+      if (window.location.protocol === 'file:') { isSiteActive = true; } 
+      else {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3500);
-
-        const response = await fetch(window.location.href, {
-          method: 'GET',
-          cache: 'no-store',
-          signal: controller.signal
-        });
-
+        const response = await fetch(window.location.href, { method: 'GET', cache: 'no-store', signal: controller.signal });
         clearTimeout(timeoutId);
-
-        if (response.ok || response.status < 400) {
-          isSiteActive = true;
-        }
+        if (response.ok || response.status < 400) isSiteActive = true;
       }
-    } catch (error) {
-      isSiteActive = false;
-    }
+    } catch (e) { isSiteActive = false; }
 
     const elapsed = Date.now() - startTime;
-    if (elapsed < 1500) {
-      await new Promise(resolve => setTimeout(resolve, 1500 - elapsed));
-    }
+    if (elapsed < 1200) await new Promise(r => setTimeout(r, 1200 - elapsed));
 
     if (isSiteActive) {
       statusDot.className = 'status-dot active';
       statusText.innerText = 'Active / Online';
       statusText.style.color = '#30d158';
-
-      const totalElapsed = Date.now() - startTime;
-      const remainingTime = Math.max(0, 5000 - totalElapsed);
-
-      setTimeout(function() {
-        preloader.classList.add('preloader-hidden');
-      }, remainingTime);
-
+      setTimeout(() => preloader.classList.add('preloader-hidden'), 800);
     } else {
       statusDot.className = 'status-dot down';
-      statusText.innerText = 'Down / Offline';
+      statusText.innerText = 'Offline';
       statusText.style.color = '#ff3b30';
-      
-      rippleSpans.forEach(span => {
-        span.style.borderColor = '#ff3b30';
-      });
     }
   });
 </script>
 
-<!-- ==================== WEATHER APP LOGIC ==================== -->
 <script>
 let currentLang = 'en';
 let currentWeatherData = null;
 
 const i18n = {
     en: {
-        title: "Weather Forecast",
-        searchPlaceholder: "Search location...",
-        btnSearch: "Search",
-        pagasaBtn: "PAGASA Weather Bulletins & Updates",
-        modalDesc: "Access official PAGASA DOST portals for live weather bulletins, warnings, and tropical cyclone tracking:",
-        statusFetchingGPS: "Fetching GPS location...",
-        statusSearching: 'Searching for "{query}"...',
-        statusNotFound: "Location not found.",
-        lblHourlyTitle: "Hourly Forecast",
-        lblRainWarning: "PAGASA Rainfall Warning",
-        lblWindSignal: "PAGASA Wind Signal",
-        lblRainChance: "Rain Chance Today",
-        lblWindSpeed: "Wind Speed",
-        lblHumidity: "Humidity",
-        lblGPS: "GPS Coords",
-        lblRadarTitle: "🌀 PLAYABLE LIVE SATELLITE & RADAR MAP",
-        lblTmrTitle: "Tomorrow's Forecast",
-        lblTmrProb: "☔ Chance",
-        lblTmrExp: "🌧️ Expected",
-        lblTmrWind: "💨 Wind",
-        lblTmrStatus: "🌀 Status",
-        btnMyLoc: "📍 Check My Location",
-        lblLastUpdated: "Last updated:"
-    },
-    tl: {
-        title: "Ulat ng Panahon",
-        searchPlaceholder: "Mag-search ng lugar...",
-        btnSearch: "Search",
-        pagasaBtn: "Mga Ulat at Balita mula sa PAGASA",
-        modalDesc: "Pumili sa mga opisyal na portal ng PAGASA DOST para sa live weather bulletins, thunderstorm advisories, at bagyo updates:",
-        statusFetchingGPS: "Kinu-kuha ang GPS...",
-        statusSearching: 'Hina-hanap ang "{query}"...',
-        statusNotFound: "Hindi nahanap ang lugar.",
-        lblHourlyTitle: "Oras-oras na Forecast",
-        lblRainWarning: "PAGASA Rainfall Warning",
-        lblWindSignal: "PAGASA Wind Signal",
-        lblRainChance: "Tsansa ng Ulan Ngayon",
-        lblWindSpeed: "Bilis ng Hangin",
-        lblHumidity: "Humidity",
-        lblGPS: "GPS Coords",
-        lblRadarTitle: "🌀 LIVE MAP NA PWEDENG I-PLAY AT SATELLITE RADAR",
-        lblTmrTitle: "Forecast Para Bukas",
-        lblTmrProb: "☔ Tsansa",
-        lblTmrExp: "🌧️ Inaasahan",
-        lblTmrWind: "💨 Hangin",
-        lblTmrStatus: "🌀 Status",
-        btnMyLoc: "📍 I-check ang lokasyon ko",
-        lblLastUpdated: "Huling na-update:"
-    }
-};
-
-function setLanguage(lang) {
-    currentLang = lang;
-    document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
-    document.getElementById('btn-lang-tl').classList.toggle('active', lang === 'tl');
-
-    const t = i18n[lang];
-    document.getElementById('txt-title').textContent = t.title;
-    document.getElementById('city-input').placeholder = t.searchPlaceholder;
-    document.getElementById('txt-btn-search').textContent = t.btnSearch;
-    document.getElementById('lbl-pagasa-btn').textContent = t.pagasaBtn;
-    document.getElementById('modal-desc').textContent = t.modalDesc;
-    document.getElementById('lbl-hourly-title').textContent = t.lblHourlyTitle;
-    document.getElementById('lbl-rain-warning').textContent = t.lblRainWarning;
-    document.getElementById('lbl-wind-signal').textContent = t.lblWindSignal;
-    document.getElementById('lbl-rain-chance').textContent = t.lblRainChance;
-    document.getElementById('lbl-wind-speed').textContent = t.lblWindSpeed;
-    document.getElementById('lbl-humidity').textContent = t.lblHumidity;
-    document.getElementById('lbl-gps').textContent = t.lblGPS;
-    document.getElementById('lbl-radar-title').textContent = t.lblRadarTitle;
-    document.getElementById('lbl-tmr-title').textContent = t.lblTmrTitle;
-    document.getElementById('lbl-tmr-prob').textContent = t.lblTmrProb;
-    document.getElementById('lbl-tmr-exp').textContent = t.lblTmrExp;
-    document.getElementById('lbl-tmr-wind').textContent = t.lblTmrWind;
-    document.getElementById('lbl-tmr-status').textContent = t.lblTmrStatus;
-    document.getElementById('btn-my-loc').textContent = t.btnMyLoc;
-    document.getElementById('lbl-last-updated').textContent = t.lblLastUpdated;
-
-    updateClock();
-    if (currentWeatherData) renderWeatherUI(currentWeatherData);
-}
-
-function openPagasaModal() {
-    const modal = document.getElementById('pagasa-modal');
-    if (modal) modal.classList.add('active');
-}
-
-function closePagasaModal(e) {
-    const modal = document.getElementById('pagasa-modal');
-    if (modal) modal.classList.remove('active');
-}
-
-// Canvas Weather Visuals
-const canvas = document.getElementById('weather-canvas');
-const ctx = canvas.getContext('2d');
-let width, height;
-
-function resizeCanvas() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-let currentEffect = 'sunny';
-let rainDrops = [], sunRays = [], flashOpacity = 0;
-
-function initEffects() {
-    rainDrops = [];
-    for (let i = 0; i < 150; i++) {
-        rainDrops.push({
-            x: Math.random() * width, y: Math.random() * height,
-            length: Math.random() * 22 + 10, speed: Math.random() * 10 + 8, opacity: Math.random() * 0.4 + 0.1
-        });
-    }
-    sunRays = [];
-    for (let i = 0; i < 25; i++) {
-        sunRays.push({
-            x: Math.random() * width, y: Math.random() * height,
-            radius: Math.random() * 80 + 30, speed: Math.random() * 0.5 + 0.2, opacity: Math.random() * 0.15 + 0.05
-        });
-    }
-}
-initEffects();
-
-function setWeatherEffect(code, rainAmount, isThunderstorm) {
-    if (code >= 95 || isThunderstorm) {
-        currentEffect = 'thunderstorm';
-        document.body.style.background = '#090d16';
-    } else if (rainAmount > 0 || (code >= 51 && code <= 82)) {
-        currentEffect = 'rain';
-        document.body.style.background = '#0f172a';
-    } else {
-        currentEffect = 'sunny';
-        document.body.style.background = 'linear-gradient(135deg, #0284c7 0%, #0f172a 100%)';
-    }
-}
-
-function animateWeather() {
-    ctx.clearRect(0, 0, width, height);
-    if (currentEffect === 'rain' || currentEffect === 'thunderstorm') {
-        for (let drop of rainDrops) {
-            ctx.beginPath();
-            ctx.moveTo(drop.x, drop.y);
-            ctx.lineTo(drop.x - drop.length * 0.2, drop.y + drop.length);
-            ctx.strokeStyle = `rgba(180, 210, 255, ${drop.opacity})`;
-            ctx.lineWidth = 1.3;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-            drop.y += drop.speed;
-            drop.x -= drop.speed * 0.2;
-            if (drop.y > height) { drop.y = -drop.length; drop.x = Math.random() * width; }
-        }
-        if (currentEffect === 'thunderstorm') {
-            if (Math.random() < 0.035 && flashOpacity <= 0) flashOpacity = Math.random() * 0.8 + 0.2;
-            if (flashOpacity > 0) {
-                ctx.fillStyle = `rgba(238, 242, 255, ${flashOpacity})`;
-                ctx.fillRect(0, 0, width, height);
-                flashOpacity -= 0.05;
-            }
-        }
-    } else if (currentEffect === 'sunny') {
-        for (let ray of sunRays) {
-            ctx.beginPath();
-            ctx.arc(ray.x, ray.y, ray.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(253, 224, 71, ${ray.opacity})`;
-            ctx.fill();
-            ray.y -= ray.speed;
-            if (ray.y + ray.radius < 0) { ray.y = height + ray.radius; ray.x = Math.random() * width; }
-        }
-    }
-    requestAnimationFrame(animateWeather);
-}
-animateWeather();
-
-let map = null, marker = null;
-
-function createWaterRipple(event) {
-    const button = event.currentTarget;
-    const circle = document.createElement("span");
-    const diameter = Math.max(button.clientWidth, button.clientHeight);
-    const radius = diameter / 2;
-    const rect = button.getBoundingClientRect();
-    circle.style.width = circle.style.height = `${diameter}px`;
-    circle.style.left = `${event.clientX - rect.left - radius}px`;
-    circle.style.top = `${event.clientY - rect.top - radius}px`;
-    circle.classList.add("water-ripple");
-    const existingRipple = button.querySelector(".water-ripple");
-    if (existingRipple) existingRipple.remove();
-    button.appendChild(circle);
-    setTimeout(() => circle.remove(), 750);
-}
-document.querySelectorAll('.btn-ripple').forEach(btn => btn.addEventListener('click', createWaterRipple));
-
-function updateClock() {
-    const now = new Date();
-    const locale = currentLang === 'tl' ? 'tl-PH' : 'en-US';
-    document.getElementById('live-clock').textContent = now.toLocaleString(locale, { 
-        weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
-        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true 
-    });
-}
-setInterval(updateClock, 1000); updateClock();
-
-function updateWindyRadar(lat, lon) {
-    const windyFrame = document.getElementById('windy-radar-frame');
-    if (windyFrame) {
-        windyFrame.src = `https://embed.windy.com/embed2.html?lat=${lat}&lon=${lon}&detailLat=${lat}&detailLon=${lon}&width=100%25&height=380&zoom=6&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1`;
-    }
-}
-
-function searchLocation() {
-    const query = document.getElementById('city-input').value.trim();
-    if (!query) return;
-    document.getElementById('status').style.display = 'block';
-    document.getElementById('status').textContent = i18n[currentLang].statusSearching.replace('{query}', query);
-    
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.length > 0) {
-                const lat = parseFloat(data[0].lat);
-                const lon = parseFloat(data[0].lon);
-                document.getElementById('location-name').textContent = data[0].display_name.split(',').slice(0, 3).join(',');
-                fetchWeather(lat, lon);
-                initMap(lat, lon);
-                updateWindyRadar(lat, lon);
-            } else { 
-                document.getElementById('status').textContent = i18n[currentLang].statusNotFound; 
-            }
-        });
-}
-
-function getWeather() {
-    document.getElementById('status').style.display = 'block';
-    document.getElementById('status').textContent = i18n[currentLang].statusFetchingGPS;
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                fetchLocationName(pos.coords.latitude, pos.coords.longitude);
-                fetchWeather(pos.coords.latitude, pos.coords.longitude);
-                initMap(pos.coords.latitude, pos.coords.longitude);
-                updateWindyRadar(pos.coords.latitude, pos.coords.longitude);
-            },
-            () => getByIP(), { enableHighAccuracy: true, timeout: 10000 }
-        );
-    } else { getByIP(); }
-}
-
-function fetchLocationName(lat, lon) {
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18`)
-        .then(res => res.json())
-        .then(data => {
-            const a = data.address;
-            document.getElementById('location-name').textContent = [a.neighbourhood || a.suburb || a.village, a.town || a.city, a.state].filter(Boolean).join(', ');
-        });
-}
-
-function getByIP() {
-    fetch('https://ipapi.co/json/').then(res => res.json()).then(loc => {
-        document.getElementById('location-name').textContent = `${loc.city}, ${loc.country_name}`;
-        fetchWeather(loc.latitude, loc.longitude);
-        initMap(loc.latitude, loc.longitude);
-        updateWindyRadar(loc.latitude, loc.longitude);
-    });
-}
-
-async function fetchWeather(lat, lon) {
-    document.getElementById('coords').textContent = `${lat.toFixed(3)}°, ${lon.toFixed(3)}°`;
-    const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relativehumidity_2m,weathercode,windspeed_10m,windgusts_10m,rain,precipitation&hourly=temperature_2m,precipitation_probability,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,windspeed_10m_max&models=best_match&timezone=auto`;
-
-    try {
-        const response = await fetch(apiUrl);
-        currentWeatherData = await response.json();
-        renderWeatherUI(currentWeatherData);
-    } catch (e) {
-        document.getElementById('status').textContent = 'Error fetching data.';
-    }
-}
-
-function renderWeatherUI(data) {
-    const current = data.current;
-    const daily = data.daily;
-    const hourly = data.hourly;
-    const isEn = currentLang === 'en';
-
-    document.getElementById('temperature').textContent = `${Math.round(current.temperature_2m)}°C`;
-    const windSpeed = Math.round(current.windspeed_10m);
-    const windGusts = Math.round(current.windgusts_10m || windSpeed);
-    const rainProbToday = daily.precipitation_probability_max[0] || 0;
-    const rainAmount = current.rain || current.precipitation || 0;
-
-    document.getElementById('windspeed').textContent = `${windSpeed} km/h`;
-    document.getElementById('humidity').textContent = `${current.relativehumidity_2m}%`;
-    document.getElementById('weather-code').textContent = parseWeatherCodeNow(current.weathercode);
-    document.getElementById('rain-prob').textContent = `${rainProbToday}%`;
-
-    const hourlyList = document.getElementById('hourly-list');
-    hourlyList.innerHTML = '';
-    const nowHour = new Date().getHours();
-
-    for (let i = nowHour; i < nowHour + 24 && i < hourly.time.length; i++) {
-        const dateObj = new Date(hourly.time[i]);
-        const hourLabel = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-        const temp = Math.round(hourly.temperature_2m[i]);
-        const prob = hourly.precipitation_probability[i] || 0;
-
-        const item = document.createElement('div');
-        item.className = 'hourly-item';
-        item.innerHTML = `
-            <span>${hourLabel}</span>
-            <b style="color:#38bdf8;">${temp}°C</b>
-            <span style="font-size:10px; color:#94a3b8;">☔${prob}%</span>
-        `;
-        hourlyList.appendChild(item);
-    }
-
-    const rainBox = document.getElementById('rain-box');
-    const rainStatusText = document.getElementById('rain-status');
-    rainBox.className = 'info-box';
-
-    if (rainAmount >= 30.0) {
-        rainBox.classList.add('status-red');
-        rainStatusText.textContent = '🔴 RED: Evacuate!';
-    } else if (rainAmount >= 15.0) {
-        rainBox.classList.add('status-orange');
-        rainStatusText.textContent = '🟠 ORANGE: Alert!';
-    } else if (rainAmount >= 7.5) {
-        rainBox.classList.add('status-yellow');
-        rainStatusText.textContent = '🟡 YELLOW: Monitor';
-    } else if (rainAmount > 0 || rainProbToday >= 75) {
-        rainBox.classList.add('status-yellow');
-        rainStatusText.textContent = isEn ? '🌧️ Light Rain' : '🌧️ Bahagyang Ulan';
-    } else {
-        rainBox.classList.add('status-green');
-        rainStatusText.textContent = isEn ? '☀️ No Rain' : '☀️ Walang Ulan';
-    }
-
-    const typhoonBox = document.getElementById('typhoon-box');
-    const typhoonStatusText = document.getElementById('typhoon-status');
-    typhoonBox.className = 'info-box';
-    let isThunderstorm = false;
-
-    if (windGusts >= 185) {
-        typhoonBox.classList.add('status-purple');
-        typhoonStatusText.textContent = '🌀 Super Typhoon (#5)';
-    } else if (windGusts >= 118) {
-        typhoonBox.classList.add('status-purple');
-        typhoonStatusText.textContent = '🌀 Typhoon (#3-#4)';
-    } else if (windGusts >= 62) {
-        typhoonBox.classList.add('status-purple');
-        typhoonStatusText.textContent = '🌀 Severe Storm (#2)';
-    } else if (windGusts >= 39) {
-        typhoonBox.classList.add('status-purple');
-        typhoonStatusText.textContent = '🌀 Signal No. 1';
-    } else if (current.weathercode >= 95) {
-        typhoonBox.classList.add('status-yellow');
-        typhoonStatusText.textContent = '🌩️ Thunderstorm';
-        isThunderstorm = true;
-    } else {
-        typhoonBox.classList.add('status-green');
-        typhoonStatusText.textContent = isEn ? '☀️ Safe / Normal' : '☀️ Ligtas / Normal';
-    }
-
-    setWeatherEffect(current.weathercode, rainAmount, isThunderstorm);
-
-    const tmrCode = daily.weathercode[1];
-    const tmrMax = Math.round(daily.temperature_2m_max[1]);
-    const tmrMin = Math.round(daily.temperature_2m_min[1]);
-    const tmrRainProb = daily.precipitation_probability_max[1] || 0;
-    const tmrRainSum = (daily.precipitation_sum[1] || 0).toFixed(1);
-    const tmrWind = Math.round(daily.windspeed_10m_max[1] || 0);
-
-    document.getElementById('tmr-condition').textContent = parseWeatherCodeFuture(tmrCode);
-    document.getElementById('tmr-temp').textContent = `${tmrMax}° / ${tmrMin}°C`;
-    document.getElementById('tmr-rain-prob').textContent = `${tmrRainProb}%`;
-    document.getElementById('tmr-rain-sum').textContent = `${tmrRainSum} mm`;
-    document.getElementById('tmr-wind').textContent = `${tmrWind} km/h`;
-
-    let tmrWarningText = isEn ? '☀️ Fair weather' : '☀️ Maayos ang panahon';
-    let tmrStatusText = isEn ? 'Fair' : 'Maayos';
-
-    if (tmrWind >= 39 || tmrRainProb >= 80) {
-        tmrWarningText = isEn ? '🌀 Storm Threat' : '🌀 Banta ng Bagyo';
-        tmrStatusText = isEn ? 'Alert' : 'May Alert';
-    } else if (tmrRainSum >= 15) {
-        tmrWarningText = isEn ? '🌧️ Heavy Rain Expected' : '🌧️ Inaasahang Malakas na Ulan';
-        tmrStatusText = 'Monitor';
-    }
-
-    document.getElementById('tmr-warning').textContent = tmrWarningText;
-    document.getElementById('tmr-status').textContent = tmrStatusText;
-
-    const locale = isEn ? 'en-US' : 'tl-PH';
-    document.getElementById('update-time').textContent = new Date().toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: true });
-    document.getElementById('status').style.display = 'none';
-    document.getElementById('weather-data').style.display = 'flex';
-}
-
-function initMap(lat, lon) {
-    if (!map) {
-        map = L.map('map').setView([lat, lon], 13);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
-        marker = L.marker([lat, lon]).addTo(map);
-    } else {
-        map.setView([lat, lon], 13);
-        marker.setLatLng([lat, lon]);
-    }
-    setTimeout(() => map.invalidateSize(), 200);
-}
-
-function parseWeatherCodeNow(code) {
-    const isEn = currentLang === 'en';
-    if (code === 0) return isEn ? 'Clear Sky' : 'Maliwanag';
-    if (code >= 1 && code <= 3) return isEn ? 'Partly Cloudy' : 'Bahagyang Maulap';
-    if (code >= 45 && code <= 48) return isEn ? 'Foggy' : 'May Fog';
-    if (code >= 51 && code <= 67) return isEn ? 'Light Rain' : 'Bahagyang Ulan';
-    if (code >= 80 && code <= 82) return isEn ? 'Heavy Rain' : 'Malakas na Ulan';
-    if (code >= 95) return isEn ? 'Thunderstorm' : 'May Kidlat at Ulan';
-    return isEn ? 'Cloudy' : 'Maulap';
-}
-
-function parseWeatherCodeFuture(code) {
-    const isEn = currentLang === 'en';
-    if (code === 0) return isEn ? 'Sunny' : 'Masikat ang Araw';
-    if (code >= 1 && code <= 3) return isEn ? 'Partly Cloudy' : 'Bahagyang Maulap';
-    if (code >= 51 && code <= 67) return isEn ? 'Rain Showers' : 'Inaasahang Ulan';
-    if (code >= 95) return isEn ? 'Thunderstorms' : 'Banta ng Kidlat at Ulan';
-    return isEn ? 'Cloudy' : 'Maulap';
-}
-
-getWeather();
-</script>
-
-</body>
-</html>
+        title: "Weather Forecast", searchPlaceholder: "Search location...", btnSearch: "Search",
+        pagasaBtn: "PAGASA Weather Bulletins & Updates", modalDesc: "Access official PAGASA DOST portals for live updates:",
+        statusFetchingGPS: "Fetching GPS location...", statusSearching: 'Searching for "{query}"...', statusNotFound: "Location not found.",
+        lblHourlyTitle: "Hourly Forecast", lblRainWarning: "PAGASA Rainfall Warning", lblWindSignal: "PAGASA Wind Signal",
+        lblRainChance: "Rain Chanc
